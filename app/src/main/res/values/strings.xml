@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Station Adviser</string>
+    <string name="find_station">Buscar estaciones</string>
+
+    <string-array name="zones">
+        <item>Caribe</item>
+        <item>Andina</item>
+        <item>Pacífica</item>
+        <item>Orinoquía</item>
+        <item>Amazonía</item>
+    </string-array>
+</resources>

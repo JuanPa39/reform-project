@@ -5,44 +5,44 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".StationExpert">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Cliente - Consultar Estación"
+        android:text="Empleado Estación - Responder Cliente"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_marginBottom="20dp"/>
 
-    <!-- Historial de mensajes -->
+    <!-- Historial de respuestas -->
     <TextView
-        android:id="@+id/history_cliente"
+        android:id="@+id/history_empleado"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:background="@android:drawable/editbox_background"
         android:padding="10dp"
-        android:text="Historial de mensajes..."
+        android:text="Historial de respuestas..."
         android:scrollbars="vertical"/>
 
-    <!-- Campo para escribir mensaje -->
+    <!-- Campo para respuesta -->
     <EditText
-        android:id="@+id/message"
+        android:id="@+id/response_message"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:hint="@string/hint_cliente"
+        android:hint="@string/hint_empleado"
         android:ems="10" />
 
-    <!-- Botón enviar -->
+    <!-- Botón responder -->
     <Button
-        android:id="@+id/send"
+        android:id="@+id/respond"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
-        android:onClick="onSendMessage"
-        android:text="@string/send_cliente"/>
+        android:onClick="onRespondMessage"
+        android:text="@string/responder"/>
 
 </LinearLayout>

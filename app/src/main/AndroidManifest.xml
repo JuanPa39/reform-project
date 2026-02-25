@@ -10,16 +10,27 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.StationAdviser">
+        android:theme="@style/Theme.StationAdviser"
+        tools:targetApi="31">  <!-- este es el único lugar donde debe ir -->
+
         <activity
-            android:name=".MainActivity"
+            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".StationExpert"
+            android:exported="false" />
+
+        <activity android:name=".RoleBaseActivity" />
+
+    </application>
 </manifest>

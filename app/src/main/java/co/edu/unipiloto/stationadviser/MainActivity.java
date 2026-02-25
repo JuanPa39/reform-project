@@ -1,38 +1,54 @@
 package co.edu.unipiloto.stationadviser;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Spinner;
+import android.widget.EditText;
 import android.widget.TextView;
+import java.util.ArrayList;
 
-import androidx.appcompat.app.AppCompatActivity;
+public class MainActivity extends Activity {
 
-import java.util.List;
-
-public class MainActivity extends AppCompatActivity {
+    public static final String EXTRA_MESSAGE = "message";
+    public static final String EXTRA_HISTORY = "history";
+    private static ArrayList<String> historialMensajes = new ArrayList<>();
+    private TextView historyTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        historyTextView = findViewById(R.id.history_cliente);
+
+        // Si venimos de StationExpert, recibimos el historial actualizado
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra(EXTRA_HISTORY)) {
+            historialMensajes = (ArrayList<String>) intent.getSerializableExtra(EXTRA_HISTORY);
+        }
+        actualizarHistorial();
     }
 
-    public void onClickFindStation(View view) {
+    public void onSendMessage(View view) {
+        EditText messageView = findViewById(R.id.message);
+        String messageText = "Cliente: " + messageView.getText().toString();
 
-        Spinner spinner = findViewById(R.id.zones);
-        String zone = String.valueOf(spinner.getSelectedItem());
+        // Agregar al historial
+        historialMensajes.add(messageText);
 
-        TextView stationsView = findViewById(R.id.stations);
+        // Iniciar StationExpert y pasarle el mensaje y el historial
+        Intent intent = new Intent(this, StationExpert.class);
+        intent.putExtra(EXTRA_MESSAGE, messageText);
+        intent.putExtra(EXTRA_HISTORY, historialMensajes);
+        startActivity(intent);
+    }
 
-        StationExpert expert = new StationExpert();
-        List<String> stationList = expert.getStations(zone);
-
-        StringBuilder formattedStations = new StringBuilder();
-
-        for (String station : stationList) {
-            formattedStations.append(station).append("\n");
+    private void actualizarHistorial() {
+        StringBuilder builder = new StringBuilder();
+        for (String mensaje : historialMensajes) {
+            builder.append(mensaje).append("\n\n");
         }
-
-        stationsView.setText(formattedStations);
+        historyTextView.setText(builder.toString());
     }
 }

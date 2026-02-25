@@ -1,6 +1,9 @@
 package co.edu.unipiloto.stationadviser;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -14,6 +17,7 @@ public class ListaEstacionesActivity extends AppCompatActivity {
     private ListView listView;
     private ArrayAdapter<String> adapter;
     private List<String> datos;
+    private List<Estacion> estacionesList; // Guardar objetos completos
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,19 +27,36 @@ public class ListaEstacionesActivity extends AppCompatActivity {
         dbHelper = new DatabaseHelper(this);
         listView = findViewById(R.id.listViewEstaciones);
         datos = new ArrayList<>();
+        estacionesList = new ArrayList<>();
 
         cargarEstaciones();
+
+        // Al hacer clic en una estación, ir a editar
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Estacion estacion = estacionesList.get(position);
+                Intent intent = new Intent(ListaEstacionesActivity.this, RegistrarEstacionActivity.class);
+                intent.putExtra("modo_edicion", true);
+                intent.putExtra("estacion_id", estacion.getId());
+                intent.putExtra("estacion_nombre", estacion.getNombre());
+                intent.putExtra("estacion_nit", estacion.getNit());
+                intent.putExtra("estacion_ubicacion", estacion.getUbicacion());
+                startActivity(intent);
+            }
+        });
     }
 
     private void cargarEstaciones() {
-        List<Estacion> estaciones = dbHelper.obtenerTodasLasEstaciones();
+        estacionesList = dbHelper.obtenerTodasLasEstaciones();
         datos.clear();
 
-        if (estaciones.isEmpty()) {
+        if (estacionesList.isEmpty()) {
             datos.add("No hay estaciones registradas.");
         } else {
-            for (Estacion e : estaciones) {
-                datos.add("Nombre: " + e.getNombre() + "\nNIT: " + e.getNit() + "\nUbicación: " + e.getUbicacion());
+            for (Estacion e : estacionesList) {
+                datos.add("Nombre: " + e.getNombre() + "\nNIT: " + e.getNit() +
+                        "\nUbicación: " + e.getUbicacion() + "\n(Toca para editar)");
             }
         }
 
@@ -46,6 +67,6 @@ public class ListaEstacionesActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cargarEstaciones(); // recargar al volver
+        cargarEstaciones(); // Recargar al volver
     }
 }

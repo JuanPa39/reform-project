@@ -133,6 +133,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return listaUsuarios;
     }
+    public Estacion getEstacionById(int id) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Estacion estacion = null;
+
+        String query = "SELECT * FROM " + TABLE_ESTACIONES + " WHERE " + COLUMN_ID_EST + " = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(id)});
+
+        if (cursor.moveToFirst()) {
+            String nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE));
+            String nit = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIT));
+            String ubicacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UBICACION));
+            estacion = new Estacion(id, nombre, nit, ubicacion);
+        }
+        cursor.close();
+        db.close();
+        return estacion;
+    }
+    public boolean updateEstacion(int id, String nombre, String nit, String ubicacion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOMBRE, nombre);
+        values.put(COLUMN_NIT, nit);
+        values.put(COLUMN_UBICACION, ubicacion);
+
+        int filasAfectadas = db.update(TABLE_ESTACIONES, values, COLUMN_ID_EST + " = ?",
+                new String[]{String.valueOf(id)});
+        db.close();
+        return filasAfectadas > 0;
+    }
     public List<Estacion> obtenerTodasLasEstaciones() {
         List<Estacion> lista = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();

@@ -22,14 +22,13 @@ public class RoleBaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_role_base);
 
-        // Obtener datos del intent con manejo de nulos
+        // Obtener datos del intent
         Intent intent = getIntent();
         if (intent != null) {
             userEmail = intent.getStringExtra("email");
             userRole = intent.getStringExtra("role");
         }
 
-        // Depuración: mostrar en logs qué recibimos
         Log.d(TAG, "Email recibido: " + userEmail);
         Log.d(TAG, "Rol recibido: " + userRole);
 
@@ -41,49 +40,23 @@ public class RoleBaseActivity extends AppCompatActivity {
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
-        // Mostrar correo (con valor por defecto si es nulo)
+        // Mostrar correo
         if (userEmail != null) {
             textViewEmail.setText("Correo: " + userEmail);
         } else {
             textViewEmail.setText("Correo: No disponible");
         }
 
-        // Si el rol es nulo, asignar uno por defecto para evitar crash
+        // Si el rol es nulo, asignar uno por defecto
         if (userRole == null) {
-            userRole = "Cliente"; // Valor por defecto
+            userRole = "Cliente";
             Log.e(TAG, "Rol era nulo, asignado valor por defecto: Cliente");
         }
 
-        // Configurar botones según rol
+        // Configurar botones según el rol (esto ya asigna los listeners específicos)
         configurarBotonesPorRol();
 
-        // Asignar acciones a los botones
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RoleBaseActivity.this, "Rol: " + userRole + " - Botón 1", Toast.LENGTH_SHORT).show();
-            }
-        });
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RoleBaseActivity.this, "Rol: " + userRole + " - Botón 2", Toast.LENGTH_SHORT).show();
-            }
-        });
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RoleBaseActivity.this, "Rol: " + userRole + " - Botón 3", Toast.LENGTH_SHORT).show();
-            }
-        });
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(RoleBaseActivity.this, "Rol: " + userRole + " - Botón 4", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        // Botón de cerrar sesión
+        // ÚNICO LISTENER FUERA DEL SWITCH: botón de cerrar sesión
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -104,19 +77,51 @@ public class RoleBaseActivity extends AppCompatActivity {
 
         Log.d(TAG, "Configurando botones para rol: " + userRole);
 
-        // Según el rol, mostrar ciertos botones
         if (userRole != null) {
             switch (userRole) {
                 case "Cliente":
                     button1.setVisibility(View.VISIBLE);
                     button1.setText("Consultar precio combustible");
+                    button1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Función de cliente (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     break;
+
                 case "Empleado de estación":
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
-                    button1.setText("Ver inventario");
+                    button3.setVisibility(View.VISIBLE);
+                    button1.setText("Registrar estación");
                     button2.setText("Atender cliente");
+                    button3.setText("Ver estaciones");
+
+                    button1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    button2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Función Atender cliente (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+                    button3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(RoleBaseActivity.this, ListaEstacionesActivity.class);
+                            startActivity(intent);
+                        }
+                    });
                     break;
+
                 case "Equipo técnico":
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
@@ -124,7 +129,27 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button1.setText("Diagnosticar surtidor");
                     button2.setText("Reparar equipo");
                     button3.setText("Mantenimiento preventivo");
+
+                    button1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Diagnóstico (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    button2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Reparación (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    button3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Mantenimiento (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     break;
+
                 case "Entidad reguladora":
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
@@ -134,7 +159,33 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button2.setText("Programar inspección");
                     button3.setText("Registrar multa");
                     button4.setText("Generar reporte");
+
+                    button1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Normativas (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    button2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Inspección (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    button3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Multas (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                    button4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Toast.makeText(RoleBaseActivity.this, "Reportes (próximamente)", Toast.LENGTH_SHORT).show();
+                        }
+                    });
                     break;
+
                 default:
                     Log.e(TAG, "Rol desconocido: " + userRole);
                     button1.setVisibility(View.VISIBLE);

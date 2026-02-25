@@ -11,14 +11,18 @@ import java.util.List;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 2; // CAMBIADO A 2
+    private static final int DATABASE_VERSION = 3;
 
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_CORREO = "correo";
     private static final String COLUMN_CONTRASENA = "contrasena";
     private static final String COLUMN_ROL = "rol";
-
+    private static final String TABLE_ESTACIONES = "estaciones";
+    private static final String COLUMN_ID_EST = "id";
+    private static final String COLUMN_NOMBRE = "nombre";
+    private static final String COLUMN_NIT = "nit";
+    private static final String COLUMN_UBICACION = "ubicacion";
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_CORREO + " TEXT UNIQUE,"
@@ -32,6 +36,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(CREATE_TABLE_USERS);
+        db.execSQL(CREAR_TABLA_ESTACIONES);
         insertarUsuariosDePrueba(db);
     }
 
@@ -94,7 +99,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return usuario;
     }
+    // Método para agregar estación
+    public boolean addEstacion(String nombre, String nit, String ubicacion) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOMBRE, nombre);
+        values.put(COLUMN_NIT, nit);
+        values.put(COLUMN_UBICACION, ubicacion);
 
+        long resultado = db.insert(TABLE_ESTACIONES, null, values);
+        db.close();
+        return resultado != -1; // false si el NIT ya existe (por la restricción UNIQUE)
+    }
     public List<Usuario> obtenerTodosLosUsuarios() {
         List<Usuario> listaUsuarios = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -117,7 +133,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return listaUsuarios;
     }
+    public List<Estacion> obtenerTodasLasEstaciones() {
+        List<Estacion> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_ESTACIONES, null);
 
+        if (cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID_EST));
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE));
+                String nit = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIT));
+                String ubicacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UBICACION));
+                lista.add(new Estacion(id, nombre, nit, ubicacion));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
     public boolean addUser(String correo, String contrasena, String rol) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -131,4 +164,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return resultado != -1;
     }
+
+    private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("
+            + COLUMN_ID_EST + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            + COLUMN_NOMBRE + " TEXT,"
+            + COLUMN_NIT + " TEXT UNIQUE,"
+            + COLUMN_UBICACION + " TEXT" + ")";
 }
+

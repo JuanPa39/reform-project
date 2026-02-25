@@ -31,6 +31,7 @@
             android:exported="false" />
 
         <activity android:name=".RoleBaseActivity" />
-
+        <activity android:name=".RegistrarEstacionActivity" />
+        <activity android:name=".ListaEstacionesActivity" />
     </application>
 </manifest>

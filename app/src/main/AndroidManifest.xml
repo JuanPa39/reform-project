@@ -13,9 +13,11 @@
         android:theme="@style/Theme.StationAdviser"
         tools:targetApi="31">
         <activity
-            android:name=".Activities.ResetPasswordActivity"
+            android:name=".Activities.RegistrarPrecioCombustibleActivity"
             android:exported="false" />
-        <!-- este es el único lugar donde debe ir -->
+        <activity
+            android:name=".Activities.ResetPasswordActivity"
+            android:exported="false" /> <!-- este es el único lugar donde debe ir -->
         <activity
             android:name=".Activities.LoginActivity"
             android:exported="true">

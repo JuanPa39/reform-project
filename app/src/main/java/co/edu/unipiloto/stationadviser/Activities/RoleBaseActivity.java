@@ -96,9 +96,12 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
                     button3.setVisibility(View.VISIBLE);
+                    button4.setVisibility(View.VISIBLE);
+
                     button1.setText("Registrar estación");
                     button2.setText("Atender cliente");
                     button3.setText("Ver estaciones");
+                    button4.setText("Registrar precio combustible");
 
                     button1.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -119,6 +122,14 @@ public class RoleBaseActivity extends AppCompatActivity {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent(RoleBaseActivity.this, ListaEstacionesActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                    button4.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(RoleBaseActivity.this, RegistrarPrecioCombustibleActivity.class);
                             startActivity(intent);
                         }
                     });

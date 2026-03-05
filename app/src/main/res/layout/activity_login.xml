@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="20dp"
-    tools:context=".Activities.LoginActivity">
+    tools:context=".LoginActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -57,6 +57,17 @@
         android:textSize="18sp"/>
 
     <TextView
+        android:id="@+id/textRegistro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="¿No tienes cuenta? Regístrate"
+        android:textColor="#1976D2"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:clickable="true"/>
+
+    <TextView
         android:id="@+id/textViewMensaje"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -64,5 +75,7 @@
         android:text=""
         android:textColor="#FF0000"
         android:layout_marginTop="20dp"/>
+
+
 
 </LinearLayout>

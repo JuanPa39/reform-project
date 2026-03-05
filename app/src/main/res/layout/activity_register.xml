@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Registro de Usuario (Temporal)"
+        android:text="Registro de Usuario"
         android:textSize="24sp"
         android:textStyle="bold"
         android:layout_gravity="center_horizontal"
@@ -31,6 +31,13 @@
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:layout_marginBottom="16dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Seleccione su rol"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
 
     <Spinner
         android:id="@+id/spinnerRole"

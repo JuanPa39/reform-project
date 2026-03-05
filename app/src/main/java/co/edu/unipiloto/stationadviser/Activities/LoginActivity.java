@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText editTextCorreo, editTextContrasena;
     private Button buttonLogin;
     private TextView textViewMensaje;
+    private TextView textRegistro;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,7 @@ public class LoginActivity extends AppCompatActivity {
         editTextContrasena = findViewById(R.id.editTextContrasena);
         buttonLogin = findViewById(R.id.buttonLogin);
         textViewMensaje = findViewById(R.id.textViewMensaje);
+        textRegistro = findViewById(R.id.textRegistro);
 
         // Verificar que los elementos no sean null
         if (editTextCorreo == null) Log.e(TAG, "editTextCorreo es NULL");
@@ -51,6 +53,19 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Log.d(TAG, "Botón login clickeado");
                 iniciarSesion();
+            }
+        });
+
+        //Configurar boton de registro
+        textRegistro.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.d(TAG, "Ir a pantalla de registro");
+
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+
             }
         });
     }

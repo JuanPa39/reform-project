@@ -33,5 +33,6 @@
         <activity android:name=".Activities.RoleBaseActivity" />
         <activity android:name=".Activities.RegistrarEstacionActivity" />
         <activity android:name=".Activities.ListaEstacionesActivity" />
+        <activity android:name=".Activities.RegisterActivity" />
     </application>
 </manifest>

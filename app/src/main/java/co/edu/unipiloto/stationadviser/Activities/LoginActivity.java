@@ -75,7 +75,8 @@ public class LoginActivity extends AppCompatActivity {
 
         textRecuperar.setOnClickListener(v -> {
 
-            Toast.makeText(this, "Función de recuperación próximamente", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
+            startActivity(intent);
 
         });
     }

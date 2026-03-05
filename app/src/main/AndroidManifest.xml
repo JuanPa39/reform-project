@@ -11,28 +11,30 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.StationAdviser"
-        tools:targetApi="31">  <!-- este es el único lugar donde debe ir -->
-
+        tools:targetApi="31">
+        <activity
+            android:name=".Activities.ResetPasswordActivity"
+            android:exported="false" />
+        <!-- este es el único lugar donde debe ir -->
         <activity
             android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".Activities.MainActivity"
             android:exported="false" />
-
         <activity
             android:name=".Model.StationExpert"
             android:exported="false" />
-
         <activity android:name=".Activities.RoleBaseActivity" />
         <activity android:name=".Activities.RegistrarEstacionActivity" />
         <activity android:name=".Activities.ListaEstacionesActivity" />
         <activity android:name=".Activities.RegisterActivity" />
     </application>
+
 </manifest>

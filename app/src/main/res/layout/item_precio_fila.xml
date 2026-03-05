@@ -33,7 +33,7 @@
         android:id="@+id/textPrecio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="$9.800/gal"
+        android:text="/gal"
         android:textSize="15sp"
         android:textStyle="bold"
         android:textColor="#FFFFFF"/>

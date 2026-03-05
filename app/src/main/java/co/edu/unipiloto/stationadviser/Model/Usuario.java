@@ -1,4 +1,4 @@
-package co.edu.unipiloto.stationadviser;
+package co.edu.unipiloto.stationadviser.Model;
 
 public class Usuario {
     private int id;

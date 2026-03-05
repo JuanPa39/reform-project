@@ -1,4 +1,4 @@
-package co.edu.unipiloto.stationadviser;
+package co.edu.unipiloto.stationadviser.BD;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,6 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
+
+import co.edu.unipiloto.stationadviser.Model.Estacion;
+import co.edu.unipiloto.stationadviser.Model.Usuario;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 

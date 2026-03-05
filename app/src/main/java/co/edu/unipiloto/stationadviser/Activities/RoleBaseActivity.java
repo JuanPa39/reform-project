@@ -1,4 +1,4 @@
-package co.edu.unipiloto.stationadviser;
+package co.edu.unipiloto.stationadviser.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+
+import co.edu.unipiloto.stationadviser.R;
 
 public class RoleBaseActivity extends AppCompatActivity {
 

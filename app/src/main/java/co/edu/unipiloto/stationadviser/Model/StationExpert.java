@@ -1,4 +1,4 @@
-package co.edu.unipiloto.stationadviser;
+package co.edu.unipiloto.stationadviser.Model;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import java.util.ArrayList;
+
+import co.edu.unipiloto.stationadviser.Activities.MainActivity;
+import co.edu.unipiloto.stationadviser.R;
 
 public class StationExpert extends Activity {
 

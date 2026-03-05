@@ -14,7 +14,7 @@
         tools:targetApi="31">  <!-- este es el único lugar donde debe ir -->
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,15 +23,15 @@
         </activity>
 
         <activity
-            android:name=".MainActivity"
+            android:name=".Activities.MainActivity"
             android:exported="false" />
 
         <activity
-            android:name=".StationExpert"
+            android:name=".Model.StationExpert"
             android:exported="false" />
 
-        <activity android:name=".RoleBaseActivity" />
-        <activity android:name=".RegistrarEstacionActivity" />
-        <activity android:name=".ListaEstacionesActivity" />
+        <activity android:name=".Activities.RoleBaseActivity" />
+        <activity android:name=".Activities.RegistrarEstacionActivity" />
+        <activity android:name=".Activities.ListaEstacionesActivity" />
     </application>
 </manifest>

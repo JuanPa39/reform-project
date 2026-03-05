@@ -1,4 +1,4 @@
-package co.edu.unipiloto.stationadviser;
+package co.edu.unipiloto.stationadviser.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.List;
+
+import co.edu.unipiloto.stationadviser.BD.DatabaseHelper;
+import co.edu.unipiloto.stationadviser.Model.Usuario;
+import co.edu.unipiloto.stationadviser.R;
 
 public class LoginActivity extends AppCompatActivity {
 

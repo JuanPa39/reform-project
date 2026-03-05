@@ -1,91 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp"
+    android:background="#1A2E4A"
     tools:context=".LoginActivity">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Sistema de Estación de Servicio"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="80dp"
-        android:layout_marginBottom="40dp"/>
+        android:orientation="vertical"
+        android:padding="28dp">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Correo electrónico:"
-        android:textSize="16sp"
-        android:layout_marginBottom="5dp"/>
+        <!-- Logo / Icono superior -->
+        <LinearLayout
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:background="#1E3A6E"
+            android:gravity="center"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="24dp">
 
-    <EditText
-        android:id="@+id/editTextCorreo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="ejemplo@correo.com"
-        android:inputType="textEmailAddress"
-        android:padding="10dp"
-        android:layout_marginBottom="15dp"/>
+            <View
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="#4FC3F7"/>
+        </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contraseña:"
-        android:textSize="16sp"
-        android:layout_marginBottom="5dp"/>
+        <!-- Título -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sistema de Estación"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:letterSpacing="0.01"/>
 
-    <EditText
-        android:id="@+id/editTextContrasena"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="********"
-        android:inputType="textPassword"
-        android:padding="10dp"
-        android:layout_marginBottom="25dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="de Servicio"
+            android:textSize="26sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:layout_marginBottom="40dp"/>
 
-    <Button
-        android:id="@+id/buttonLogin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Iniciar Sesión"
-        android:textSize="18sp"/>
+        <!-- Sección correo -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CORREO ELECTRÓNICO"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:id="@+id/textRegistro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="¿No tienes cuenta? Regístrate"
-        android:textColor="#1976D2"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginTop="20dp"
-        android:clickable="true"/>
+        <EditText
+            android:id="@+id/editTextCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="ejemplo@correo.com"
+            android:textColor="#FFFFFF"
+            android:inputType="textEmailAddress"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="20dp"/>
 
-    <TextView
-        android:id="@+id/textViewMensaje"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=""
-        android:textColor="#FF0000"
-        android:layout_marginTop="20dp"/>
+        <!-- Sección contraseña -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CONTRASEÑA"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
 
-    <TextView
-        android:id="@+id/textRecuperar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="¿Olvidaste tu contraseña?"
-        android:textColor="#1976D2"
-        android:gravity="center"
-        android:layout_marginTop="10dp"
-        android:clickable="true"/>
+        <EditText
+            android:id="@+id/editTextContrasena"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="••••••••"
+            android:textColor="#FFFFFF"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="8dp"/>
 
+        <!-- Recuperar contraseña -->
+        <TextView
+            android:id="@+id/textRecuperar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿Olvidaste tu contraseña?"
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:gravity="end"
+            android:layout_marginBottom="32dp"
+            android:clickable="true"/>
 
+        <!-- Botón principal -->
+        <Button
+            android:id="@+id/buttonLogin"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="INICIAR SESIÓN"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.06"
+            android:backgroundTint="#1565C0"
+            android:layout_marginBottom="20dp"/>
 
-</LinearLayout>
+        <!-- Mensaje error -->
+        <TextView
+            android:id="@+id/textViewMensaje"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text=""
+            android:textColor="#FFFFFF"
+            android:textSize="13sp"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Separador -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="20dp">
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#2E5080"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="  o  "
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"
+                android:background="#2E5080"/>
+        </LinearLayout>
+
+        <!-- Registro -->
+        <TextView
+            android:id="@+id/textRegistro"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="¿No tienes cuenta? Regístrate"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:clickable="true"/>
+
+    </LinearLayout>
+</ScrollView>

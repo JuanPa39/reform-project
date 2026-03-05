@@ -42,23 +42,20 @@ public class RegistrarPrecioCombustibleActivity extends AppCompatActivity {
     }
 
     private void cargarTiposCombustible() {
-
         String[] tipos = {"Corriente", "Extra", "Diesel"};
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner,        // ← cambio
                 tipos
         );
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);  // ← cambio
         spinnerCombustible.setAdapter(adapter);
     }
 
     private void cargarEstaciones() {
-
         estaciones = db.obtenerTodasLasEstaciones();
-
         List<String> nombres = new ArrayList<>();
 
         for (Estacion e : estaciones) {
@@ -67,11 +64,11 @@ public class RegistrarPrecioCombustibleActivity extends AppCompatActivity {
 
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
                 this,
-                android.R.layout.simple_spinner_item,
+                R.layout.item_spinner,        // ← cambio
                 nombres
         );
 
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        adapter.setDropDownViewResource(R.layout.item_spinner_dropdown);  // ← cambio
         spinnerEstaciones.setAdapter(adapter);
     }
 

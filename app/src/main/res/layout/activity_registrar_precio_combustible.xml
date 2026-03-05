@@ -1,61 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:background="#1A2E4A">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Registrar / Cambiar precio combustible"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:gravity="center"
-        android:layout_marginBottom="20dp"/>
+        android:orientation="vertical"
+        android:padding="28dp">
 
-    <!-- Selector tipo combustible -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Tipo de combustible"/>
+        <!-- Header -->
+        <View
+            android:layout_width="48dp"
+            android:layout_height="3dp"
+            android:background="#4FC3F7"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"/>
 
-    <Spinner
-        android:id="@+id/spinnerCombustible"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Gestionar Precio"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="4dp"/>
 
-    <!-- Selector estación -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Seleccionar estación"
-        android:layout_marginTop="15dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Registrar o actualizar precio de combustible"
+            android:textSize="13sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="36dp"/>
 
-    <Spinner
-        android:id="@+id/spinnerEstaciones"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <!-- Tipo de combustible -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="TIPO DE COMBUSTIBLE"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
 
-    <!-- Precio -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nuevo precio"
-        android:layout_marginTop="15dp"/>
+        <Spinner
+            android:id="@+id/spinnerCombustible"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#243B5E"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="20dp"/>
 
-    <EditText
-        android:id="@+id/editPrecio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Ingrese precio"
-        android:inputType="numberDecimal"/>
+        <!-- Estación -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ESTACIÓN"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
 
-    <Button
-        android:id="@+id/buttonGuardarPrecio"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Guardar precio"
-        android:layout_marginTop="20dp"/>
+        <Spinner
+            android:id="@+id/spinnerEstaciones"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="#243B5E"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="20dp"/>
 
-</LinearLayout>
+        <!-- Precio -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="NUEVO PRECIO"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <EditText
+            android:id="@+id/editPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:hint="Ingrese precio"
+            android:textColor="#FFFFFF"
+            android:inputType="numberDecimal"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="#243B5E"
+            android:layout_marginBottom="32dp"/>
+
+        <Button
+            android:id="@+id/buttonGuardarPrecio"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:text="GUARDAR PRECIO"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.06"
+            android:backgroundTint="#1565C0"/>
+
+    </LinearLayout>
+</ScrollView>

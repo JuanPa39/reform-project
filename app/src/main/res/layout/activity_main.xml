@@ -5,15 +5,45 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:orientation="vertical"
+    android:background="#1A2E4A"
     tools:context=".Activities.MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!-- Header -->
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cliente - Consultar Estación"
-        android:textSize="24sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="20dp"/>
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginBottom="16dp">
+
+        <View
+            android:layout_width="4dp"
+            android:layout_height="28dp"
+            android:background="#4FC3F7"
+            android:layout_marginEnd="12dp"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consultar Estación"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cliente"
+                android:textSize="12sp"
+                android:textColor="#FFFFFF"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <!-- Historial de mensajes -->
     <TextView
@@ -21,28 +51,40 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@android:drawable/editbox_background"
-        android:padding="10dp"
+        android:background="#243B5E"
+        android:padding="14dp"
         android:text="Historial de mensajes..."
-        android:scrollbars="vertical"/>
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:scrollbars="vertical"
+        android:layout_marginBottom="12dp"/>
 
-    <!-- Campo para escribir mensaje -->
+    <!-- Campo mensaje -->
     <EditText
         android:id="@+id/message"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_height="52dp"
+        android:layout_marginTop="4dp"
         android:hint="@string/hint_cliente"
-        android:ems="10" />
+        android:textColor="#FFFFFF"
+        android:paddingStart="14dp"
+        android:paddingEnd="14dp"
+        android:background="#243B5E"
+        android:ems="10"/>
 
     <!-- Botón enviar -->
     <Button
         android:id="@+id/send"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_marginTop="12dp"
         android:layout_gravity="center_horizontal"
         android:onClick="onSendMessage"
-        android:text="@string/send_cliente"/>
+        android:text="ENVIAR MENSAJE"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:letterSpacing="0.05"
+        android:backgroundTint="#1565C0"/>
 
 </LinearLayout>

@@ -26,11 +26,10 @@ public class ConsultarPrecioActivity extends AppCompatActivity {
 
         List<String> listaPrecios = db.obtenerPreciosCombustible();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(
-                this,
-                android.R.layout.simple_list_item_1,
-                listaPrecios
-        );
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                R.layout.item_precio_fila,
+                R.id.textTipoCombustible,
+                listaPrecios);
 
         listViewPrecios.setAdapter(adapter);
     }

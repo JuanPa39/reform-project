@@ -64,7 +64,7 @@ public class ListaEstacionesActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, datos);
+        adapter = new ArrayAdapter<>(this, R.layout.item_estacion_fila, R.id.textEstacionItem, datos);
         listView.setAdapter(adapter);
     }
 

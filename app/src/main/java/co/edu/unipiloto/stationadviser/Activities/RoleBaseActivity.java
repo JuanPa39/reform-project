@@ -14,7 +14,7 @@ import co.edu.unipiloto.stationadviser.R;
 public class RoleBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "RoleBaseActivity";
-    private Button button1, button2, button3, button4, buttonLogout;
+    private Button button1, button2, button3, button4, button5, buttonLogout;
     private TextView textViewEmail;
     private String userEmail;
     private String userRole;
@@ -39,6 +39,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button2 = findViewById(R.id.button2);
         button3 = findViewById(R.id.button3);
         button4 = findViewById(R.id.button4);
+        button5 = findViewById(R.id.button5);
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
@@ -76,6 +77,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button2.setVisibility(View.GONE);
         button3.setVisibility(View.GONE);
         button4.setVisibility(View.GONE);
+        button5.setVisibility(View.GONE);
 
         Log.d(TAG, "Configurando botones para rol: " + userRole);
 
@@ -84,55 +86,54 @@ public class RoleBaseActivity extends AppCompatActivity {
                 case "Cliente":
                     button1.setVisibility(View.VISIBLE);
                     button1.setText("Consultar precio combustible");
+
                     button1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Toast.makeText(RoleBaseActivity.this, "Función de cliente (próximamente)", Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(RoleBaseActivity.this, ConsultarPrecioActivity.class);
+                            startActivity(intent);
                         }
                     });
                     break;
 
                 case "Empleado de estación":
+
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
                     button3.setVisibility(View.VISIBLE);
                     button4.setVisibility(View.VISIBLE);
+                    button5.setVisibility(View.VISIBLE);
 
                     button1.setText("Registrar estación");
                     button2.setText("Atender cliente");
                     button3.setText("Ver estaciones");
                     button4.setText("Registrar precio combustible");
+                    button5.setText("Ver precios combustible");
 
-                    button1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
-                            startActivity(intent);
-                        }
+                    button1.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
+                        startActivity(intent);
                     });
 
-                    button2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(RoleBaseActivity.this, "Función Atender cliente (próximamente)", Toast.LENGTH_SHORT).show();
-                        }
+                    button2.setOnClickListener(v -> {
+                        Toast.makeText(RoleBaseActivity.this, "Función Atender cliente (próximamente)", Toast.LENGTH_SHORT).show();
                     });
 
-                    button3.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(RoleBaseActivity.this, ListaEstacionesActivity.class);
-                            startActivity(intent);
-                        }
+                    button3.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, ListaEstacionesActivity.class);
+                        startActivity(intent);
                     });
 
-                    button4.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(RoleBaseActivity.this, RegistrarPrecioCombustibleActivity.class);
-                            startActivity(intent);
-                        }
+                    button4.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarPrecioCombustibleActivity.class);
+                        startActivity(intent);
                     });
+
+                    button5.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, ConsultarPrecioActivity.class);
+                        startActivity(intent);
+                    });
+
                     break;
 
                 case "Equipo técnico":

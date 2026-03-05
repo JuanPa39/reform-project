@@ -25,6 +25,8 @@ public class LoginActivity extends AppCompatActivity {
     private TextView textViewMensaje;
     private TextView textRegistro;
 
+    private TextView textRecuperar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,14 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
+        //Configurar boton recuperar contraseña
+        textRecuperar = findViewById(R.id.textRecuperar);
+
+        textRecuperar.setOnClickListener(v -> {
+
+            Toast.makeText(this, "Función de recuperación próximamente", Toast.LENGTH_SHORT).show();
+
+        });
     }
     // Agrega este método después de onCreate
     private void verificarUsuariosEnBD() {
@@ -82,44 +92,41 @@ public class LoginActivity extends AppCompatActivity {
         Log.d(TAG, "========================");
     }
     private void iniciarSesion() {
-        Log.d(TAG, "iniciarSesion() llamado");
 
         String correo = editTextCorreo.getText().toString().trim();
         String contrasena = editTextContrasena.getText().toString().trim();
 
-        Log.d(TAG, "Correo ingresado: '" + correo + "'");
-        Log.d(TAG, "Contraseña ingresada: '" + contrasena + "'");
-
-        // Validar campos vacíos
         if (correo.isEmpty() || contrasena.isEmpty()) {
-            textViewMensaje.setText("Por favor ingrese correo y contraseña");
-            Log.d(TAG, "Campos vacíos");
+            textViewMensaje.setText("Ingrese correo y contraseña");
             return;
         }
 
-        // Validar en base de datos
-        Log.d(TAG, "Buscando usuario en BD...");
-        Usuario usuario = dbHelper.validarUsuario(correo, contrasena);
+        // Buscar usuario solo por correo
+        Usuario usuario = dbHelper.obtenerUsuarioPorCorreo(correo);
 
-        if (usuario != null) {
-            // Login exitoso
-            Log.d(TAG, "Login EXITOSO para: " + usuario.getCorreo() + " - Rol: " + usuario.getRol());
+        if (usuario == null) {
 
-            textViewMensaje.setText("");
-            Toast.makeText(this, "Bienvenido " + usuario.getRol(), Toast.LENGTH_SHORT).show();
+            textViewMensaje.setText("El correo no está registrado");
 
-            // Ir a RoleBaseActivity
-            Intent intent = new Intent(LoginActivity.this, RoleBaseActivity.class);
-            intent.putExtra("email", usuario.getCorreo());   // Cambia "correo" por "email"
-            intent.putExtra("role", usuario.getRol());       // Cambia "rol" por "role"
-
-            Log.d(TAG, "Iniciando MainActivity...");
-            startActivity(intent);
-            finish();
         } else {
-            // Login fallido
-            Log.d(TAG, "Login FALLIDO - Usuario no encontrado");
-            textViewMensaje.setText("Correo o contraseña incorrectos");
+
+            if (!usuario.getContrasena().equals(contrasena)) {
+
+                textViewMensaje.setText("La contraseña es incorrecta");
+
+            } else {
+
+                // LOGIN CORRECTO
+                Toast.makeText(this, "Bienvenido " + usuario.getRol(), Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(LoginActivity.this, RoleBaseActivity.class);
+                intent.putExtra("email", usuario.getCorreo());
+                intent.putExtra("role", usuario.getRol());
+
+                startActivity(intent);
+                finish();
+            }
         }
     }
+
 }

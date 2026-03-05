@@ -102,6 +102,32 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         return usuario;
     }
+
+    public Usuario obtenerUsuarioPorCorreo(String correo) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_CORREO + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{correo});
+
+        Usuario usuario = null;
+
+        if (cursor.moveToFirst()) {
+
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
+            String correoDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO));
+            String contrasenaDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTRASENA));
+            String rolDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROL));
+
+            usuario = new Usuario(id, correoDb, contrasenaDb, rolDb);
+        }
+
+        cursor.close();
+        db.close();
+
+        return usuario;
+    }
     // Método para agregar estación
     public boolean addEstacion(String nombre, String nit, String ubicacion) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -195,6 +221,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
         return resultado != -1;
+    }
+
+    public boolean actualizarContrasena(String correo, String nuevaContrasena) {
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CONTRASENA, nuevaContrasena);
+
+        int filas = db.update(
+                TABLE_USERS,
+                values,
+                COLUMN_CORREO + " = ?",
+                new String[]{correo}
+        );
+
+        db.close();
+
+        return filas > 0;
     }
 
     private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("

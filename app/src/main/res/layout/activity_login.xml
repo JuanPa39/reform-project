@@ -76,6 +76,16 @@
         android:textColor="#FF0000"
         android:layout_marginTop="20dp"/>
 
+    <TextView
+        android:id="@+id/textRecuperar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="¿Olvidaste tu contraseña?"
+        android:textColor="#1976D2"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        android:clickable="true"/>
+
 
 
 </LinearLayout>

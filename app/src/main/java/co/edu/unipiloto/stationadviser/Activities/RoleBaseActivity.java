@@ -14,7 +14,7 @@ import co.edu.unipiloto.stationadviser.R;
 public class RoleBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "RoleBaseActivity";
-    private Button button1, button2, button3, button4, button5, buttonLogout;
+    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9,  buttonLogout;
     private TextView textViewEmail;
     private String userEmail;
     private String userRole;
@@ -40,6 +40,10 @@ public class RoleBaseActivity extends AppCompatActivity {
         button3 = findViewById(R.id.button3);
         button4 = findViewById(R.id.button4);
         button5 = findViewById(R.id.button5);
+        button6 = findViewById(R.id.button6);
+        button7 = findViewById(R.id.button7);
+        button8 = findViewById(R.id.button8);
+        button9 = findViewById(R.id.button9);
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
@@ -103,12 +107,20 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button3.setVisibility(View.VISIBLE);
                     button4.setVisibility(View.VISIBLE);
                     button5.setVisibility(View.VISIBLE);
+                    button6.setVisibility(View.VISIBLE);
+                    button7.setVisibility(View.VISIBLE);
+                    button8.setVisibility(View.VISIBLE);
+                    button9.setVisibility(View.VISIBLE);
 
                     button1.setText("Registrar estación");
                     button2.setText("Atender cliente");
                     button3.setText("Ver estaciones");
                     button4.setText("Registrar precio combustible");
                     button5.setText("Ver precios combustible");
+                    button6.setText("Registrar inventario disponible");
+                    button7.setText("Registrar venta de combustible");
+                    button8.setText("Consultar historial de ventas");
+                    button9.setText("Generar reporte mensual");
 
                     button1.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
@@ -131,6 +143,26 @@ public class RoleBaseActivity extends AppCompatActivity {
 
                     button5.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, ConsultarPrecioActivity.class);
+                        startActivity(intent);
+                    });
+
+                    button6.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarInventarioActivity.class);
+                        startActivity(intent);
+                    });
+
+                    button7.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarVentaActivity.class);
+                        startActivity(intent);
+                    });
+
+                    button8.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, HistorialVentasActivity.class);
+                        startActivity(intent);
+                    });
+
+                    button9.setOnClickListener(v -> {
+                        Intent intent = new Intent(RoleBaseActivity.this, ReporteMensualActivity.class);
                         startActivity(intent);
                     });
 

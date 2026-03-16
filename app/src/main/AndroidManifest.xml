@@ -12,34 +12,37 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StationAdviser"
         tools:targetApi="31">
-        <activity
-            android:name=".Activities.ConsultarPrecioActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.RegistrarPrecioCombustibleActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Activities.ResetPasswordActivity"
-            android:exported="false" /> <!-- este es el único lugar donde debe ir -->
+
+        <!-- LOGIN -->
         <activity
             android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.MainActivity"
-            android:exported="false" />
-        <activity
-            android:name=".Model.StationExpert"
-            android:exported="false" />
-        <activity android:name=".Activities.RoleBaseActivity" />
-        <activity android:name=".Activities.RegistrarEstacionActivity" />
-        <activity android:name=".Activities.ListaEstacionesActivity" />
-        <activity android:name=".Activities.RegisterActivity" />
+
+        <!-- ACTIVIDADES PRINCIPALES -->
+        <activity android:name=".Activities.MainActivity" android:exported="false"/>
+        <activity android:name=".Activities.RoleBaseActivity" android:exported="false"/>
+        <activity android:name=".Activities.RegisterActivity" android:exported="false"/>
+        <activity android:name=".Activities.ResetPasswordActivity" android:exported="false"/>
+
+        <!-- ESTACIONES -->
+        <activity android:name=".Activities.RegistrarEstacionActivity" android:exported="false"/>
+        <activity android:name=".Activities.ListaEstacionesActivity" android:exported="false"/>
+
+        <!-- COMBUSTIBLE -->
+        <activity android:name=".Activities.RegistrarPrecioCombustibleActivity" android:exported="false"/>
+        <activity android:name=".Activities.ConsultarPrecioActivity" android:exported="false"/>
+
+        <!-- NUEVOS CASOS DE USO -->
+        <activity android:name=".Activities.RegistrarInventarioActivity" android:exported="false"/>
+        <activity android:name=".Activities.RegistrarVentaActivity" android:exported="false"/>
+        <activity android:name=".Activities.HistorialVentasActivity" android:exported="false"/>
+        <activity android:name=".Activities.ReporteMensualActivity" android:exported="false"/>
+
     </application>
 
 </manifest>

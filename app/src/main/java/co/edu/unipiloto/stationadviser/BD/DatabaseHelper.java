@@ -33,6 +33,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_TIPO_COMBUSTIBLE = "tipo_combustible";
     private static final String COLUMN_PRECIO = "precio";
     private static final String COLUMN_ESTACION_ID = "estacion_id";
+    private static final String TABLE_INVENTARIO = "inventario";
+    private static final String TABLE_VENTAS = "ventas";
+
+    private static final String COLUMN_TIPO = "tipo";
+    private static final String COLUMN_CANTIDAD = "cantidad";
+    private static final String COLUMN_LITROS = "litros";
+    private static final String COLUMN_FECHA = "fecha";
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_CORREO + " TEXT UNIQUE,"
@@ -45,9 +52,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         db.execSQL(CREATE_TABLE_USERS);
         db.execSQL(CREAR_TABLA_ESTACIONES);
         db.execSQL(CREAR_TABLA_PRECIOS);
+        db.execSQL(CREAR_TABLA_INVENTARIO);
+        db.execSQL(CREAR_TABLA_VENTAS);
 
         insertarUsuariosDePrueba(db);
         insertarEstacionesIniciales(db);
@@ -387,6 +397,67 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return lista;
     }
 
+    public boolean registrarInventario(String tipo, int cantidad){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TIPO, tipo);
+        values.put(COLUMN_CANTIDAD, cantidad);
+
+        long resultado = db.insert(TABLE_INVENTARIO, null, values);
+
+        db.close();
+
+        return resultado != -1;
+    }
+
+    public boolean registrarVenta(String tipo, double litros, double precio, String fecha){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TIPO, tipo);
+        values.put(COLUMN_LITROS, litros);
+        values.put(COLUMN_PRECIO, precio);
+        values.put(COLUMN_FECHA, fecha);
+
+        long resultado = db.insert(TABLE_VENTAS, null, values);
+
+        db.close();
+
+        return resultado != -1;
+    }
+
+    public List<String> obtenerHistorialVentas(){
+
+        List<String> lista = new ArrayList<>();
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VENTAS,null);
+
+        if(cursor.moveToFirst()){
+
+            do{
+
+                String tipo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIPO));
+                double litros = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_LITROS));
+                double precio = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRECIO));
+                String fecha = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA));
+
+                lista.add(tipo + " - " + litros + "L - $" + precio + " - " + fecha);
+
+            }while(cursor.moveToNext());
+
+        }
+
+        cursor.close();
+        db.close();
+
+        return lista;
+    }
+
     private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("
             + COLUMN_ID_EST + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_NOMBRE + " TEXT,"
@@ -400,5 +471,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_ESTACION_ID + " INTEGER,"
             + "FOREIGN KEY(" + COLUMN_ESTACION_ID + ") REFERENCES " + TABLE_ESTACIONES + "(" + COLUMN_ID_EST + ")"
             + ")";
+
+    private static final String CREAR_TABLA_INVENTARIO =
+            "CREATE TABLE " + TABLE_INVENTARIO + "("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_TIPO + " TEXT,"
+                    + COLUMN_CANTIDAD + " INTEGER"
+                    + ")";
+
+    private static final String CREAR_TABLA_VENTAS =
+            "CREATE TABLE " + TABLE_VENTAS + "("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_TIPO + " TEXT,"
+                    + COLUMN_LITROS + " REAL,"
+                    + COLUMN_PRECIO + " REAL,"
+                    + COLUMN_FECHA + " TEXT"
+                    + ")";
 }
+
+
 

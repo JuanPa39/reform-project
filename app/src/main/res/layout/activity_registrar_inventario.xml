@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A2E4A">
+
+    <TextView
+        android:text="Registrar Inventario"
+        android:textSize="22sp"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/editTipo"
+        android:hint="Tipo de combustible"
+        android:backgroundTint="#FFFFFF"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <EditText
+        android:id="@+id/editCantidad"
+        android:hint="Cantidad disponible"
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/buttonGuardar"
+        android:text="Guardar Inventario"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

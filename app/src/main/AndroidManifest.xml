@@ -18,30 +18,35 @@
             android:name=".Activities.LoginActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- ACTIVIDADES PRINCIPALES -->
-        <activity android:name=".Activities.MainActivity" android:exported="false"/>
-        <activity android:name=".Activities.RoleBaseActivity" android:exported="false"/>
-        <activity android:name=".Activities.RegisterActivity" android:exported="false"/>
-        <activity android:name=".Activities.ResetPasswordActivity" android:exported="false"/>
+        <!-- PRINCIPALES -->
+        <activity android:name=".Activities.MainActivity" />
+        <activity android:name=".Activities.RoleBaseActivity" />
+
+        <!-- USUARIO -->
+        <activity android:name=".Activities.RegisterActivity" />
+        <activity android:name=".Activities.ResetPasswordActivity" />
 
         <!-- ESTACIONES -->
-        <activity android:name=".Activities.RegistrarEstacionActivity" android:exported="false"/>
-        <activity android:name=".Activities.ListaEstacionesActivity" android:exported="false"/>
+        <activity android:name=".Activities.RegistrarEstacionActivity" />
+        <activity android:name=".Activities.ListaEstacionesActivity" />
 
         <!-- COMBUSTIBLE -->
-        <activity android:name=".Activities.RegistrarPrecioCombustibleActivity" android:exported="false"/>
-        <activity android:name=".Activities.ConsultarPrecioActivity" android:exported="false"/>
+        <activity android:name=".Activities.RegistrarPrecioCombustibleActivity" />
+        <activity android:name=".Activities.ConsultarPrecioActivity" />
 
-        <!-- NUEVOS CASOS DE USO -->
-        <activity android:name=".Activities.RegistrarInventarioActivity" android:exported="false"/>
-        <activity android:name=".Activities.RegistrarVentaActivity" android:exported="false"/>
-        <activity android:name=".Activities.HistorialVentasActivity" android:exported="false"/>
-        <activity android:name=".Activities.ReporteMensualActivity" android:exported="false"/>
+        <!-- INVENTARIO Y VENTAS -->
+        <activity android:name=".Activities.RegistrarInventarioActivity" />
+        <activity android:name=".Activities.RegistrarVentaActivity" />
+        <activity android:name=".Activities.HistorialVentasActivity" />
+        <activity android:name=".Activities.ReporteMensualActivity" />
+
+        <!-- 👇 ESTA ES LA NUEVA (AQUÍ VA) -->
+        <activity android:name=".Activities.ConsultarDisponibilidadActivity" />
 
     </application>
 

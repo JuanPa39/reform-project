@@ -458,6 +458,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return lista;
     }
 
+    public int obtenerCantidadDisponible(String tipo){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT SUM(" + COLUMN_CANTIDAD + ") FROM " + TABLE_INVENTARIO +
+                        " WHERE " + COLUMN_TIPO + " = ?",
+                new String[]{tipo}
+        );
+
+        int cantidad = 0;
+
+        if(cursor.moveToFirst()){
+            cantidad = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return cantidad;
+    }
+
+    public boolean aplicaSubsidio(String tipo, double litros){
+
+        // Reglas simples (puedes ajustarlas)
+        if(tipo.equalsIgnoreCase("Corriente") && litros <= 10){
+            return true;
+        }
+
+        if(tipo.equalsIgnoreCase("Diesel") && litros <= 20){
+            return true;
+        }
+
+        return false;
+    }
+
     private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("
             + COLUMN_ID_EST + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_NOMBRE + " TEXT,"

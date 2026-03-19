@@ -88,16 +88,21 @@ public class RoleBaseActivity extends AppCompatActivity {
         if (userRole != null) {
             switch (userRole) {
                 case "Cliente":
-                    button1.setVisibility(View.VISIBLE);
-                    button1.setText("Consultar precio combustible");
 
-                    button1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(RoleBaseActivity.this, ConsultarPrecioActivity.class);
-                            startActivity(intent);
-                        }
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+
+                    button1.setText("Consultar precio combustible");
+                    button2.setText("Consultar disponibilidad");
+
+                    button1.setOnClickListener(v -> {
+                        startActivity(new Intent(this, ConsultarPrecioActivity.class));
                     });
+
+                    button2.setOnClickListener(v -> {
+                        startActivity(new Intent(this, ConsultarDisponibilidadActivity.class));
+                    });
+
                     break;
 
                 case "Empleado de estación":

@@ -147,23 +147,19 @@ public class RoleBaseActivity extends AppCompatActivity {
                     });
 
                     button6.setOnClickListener(v -> {
-                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarInventarioActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(this, RegistrarInventarioActivity.class));
                     });
 
                     button7.setOnClickListener(v -> {
-                        Intent intent = new Intent(RoleBaseActivity.this, RegistrarVentaActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(this, RegistrarVentaActivity.class));
                     });
 
                     button8.setOnClickListener(v -> {
-                        Intent intent = new Intent(RoleBaseActivity.this, HistorialVentasActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(this, HistorialVentasActivity.class));
                     });
 
                     button9.setOnClickListener(v -> {
-                        Intent intent = new Intent(RoleBaseActivity.this, ReporteMensualActivity.class);
-                        startActivity(intent);
+                        startActivity(new Intent(this, ReporteMensualActivity.class));
                     });
 
                     break;

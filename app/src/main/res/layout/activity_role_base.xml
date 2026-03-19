@@ -125,12 +125,15 @@
         android:backgroundTint="#131D2B"
         android:layout_marginBottom="10dp"
         android:visibility="gone"/>
-
     <Button
         android:id="@+id/button6"
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="Botón 6"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"/>
 
     <Button
@@ -138,6 +141,10 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="Botón 7"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"/>
 
     <Button
@@ -145,6 +152,10 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="Botón 8"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"/>
 
     <Button
@@ -152,6 +163,10 @@
         android:layout_width="match_parent"
         android:layout_height="52dp"
         android:text="Botón 9"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:backgroundTint="#131D2B"
+        android:layout_marginBottom="10dp"
         android:visibility="gone"/>
 
     <!-- Espaciador -->

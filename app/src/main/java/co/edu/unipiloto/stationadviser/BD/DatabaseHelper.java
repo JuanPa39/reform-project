@@ -14,7 +14,7 @@ import co.edu.unipiloto.stationadviser.Model.Usuario;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
@@ -46,6 +46,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_CONTRASENA + " TEXT,"
             + COLUMN_ROL + " TEXT" + ")";
 
+    private static final String TABLE_NORMATIVAS = "normativas";
+    private static final String COLUMN_TITULO = "titulo";
+    private static final String COLUMN_DESCRIPCION = "descripcion";
+    private static final String COLUMN_FECHA_VIGENCIA = "fecha_vigencia";
+
+    private static final String CREAR_TABLA_NORMATIVAS =
+            "CREATE TABLE " + TABLE_NORMATIVAS + "("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_TITULO + " TEXT,"
+                    + COLUMN_DESCRIPCION + " TEXT,"
+                    + COLUMN_FECHA_VIGENCIA + " TEXT"
+                    + ")";
+
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
@@ -58,10 +71,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_PRECIOS);
         db.execSQL(CREAR_TABLA_INVENTARIO);
         db.execSQL(CREAR_TABLA_VENTAS);
+        db.execSQL(CREAR_TABLA_NORMATIVAS);
 
         insertarUsuariosDePrueba(db);
         insertarEstacionesIniciales(db);
         insertarPreciosIniciales(db);
+        insertarNormativasIniciales(db);
     }
 
     private void insertarUsuariosDePrueba(SQLiteDatabase db) {
@@ -95,6 +110,23 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.insert(TABLE_USERS, null, values);
     }
 
+    public List<String[]> obtenerNormativas() {
+        List<String[]> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_NORMATIVAS, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String titulo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TITULO));
+                String descripcion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DESCRIPCION));
+                String fecha = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA_VIGENCIA));
+                lista.add(new String[]{titulo, descripcion, fecha});
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
     private void insertarEstacionesIniciales(SQLiteDatabase db){
 
         ContentValues values = new ContentValues();
@@ -160,7 +192,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRECIOS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ESTACIONES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
-
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NORMATIVAS);
         onCreate(db);
     }
 
@@ -492,6 +524,28 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         return false;
+    }
+
+
+    private void insertarNormativasIniciales(SQLiteDatabase db) {
+        ContentValues v = new ContentValues();
+
+        v.put(COLUMN_TITULO, "Resolución 40066 de 2022");
+        v.put(COLUMN_DESCRIPCION, "Regula los precios máximos de venta de combustibles líquidos en Colombia.");
+        v.put(COLUMN_FECHA_VIGENCIA, "2022-03-01");
+        db.insert(TABLE_NORMATIVAS, null, v);
+
+        v.clear();
+        v.put(COLUMN_TITULO, "Decreto 1073 de 2015");
+        v.put(COLUMN_DESCRIPCION, "Decreto Único Reglamentario del Sector Administrativo de Minas y Energía.");
+        v.put(COLUMN_FECHA_VIGENCIA, "2015-05-26");
+        db.insert(TABLE_NORMATIVAS, null, v);
+
+        v.clear();
+        v.put(COLUMN_TITULO, "Resolución CREG 023 de 2020");
+        v.put(COLUMN_DESCRIPCION, "Establece condiciones de calidad y control en la distribución de combustibles.");
+        v.put(COLUMN_FECHA_VIGENCIA, "2020-06-15");
+        db.insert(TABLE_NORMATIVAS, null, v);
     }
 
     private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("

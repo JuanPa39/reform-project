@@ -207,11 +207,8 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button3.setText("Registrar multa");
                     button4.setText("Generar reporte");
 
-                    button1.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(RoleBaseActivity.this, "Normativas (próximamente)", Toast.LENGTH_SHORT).show();
-                        }
+                    button1.setOnClickListener(v -> {
+                        startActivity(new Intent(RoleBaseActivity.this, VerNormativasActivity.class));
                     });
                     button2.setOnClickListener(new View.OnClickListener() {
                         @Override

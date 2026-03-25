@@ -14,7 +14,7 @@ import co.edu.unipiloto.stationadviser.R;
 public class RoleBaseActivity extends AppCompatActivity {
 
     private static final String TAG = "RoleBaseActivity";
-    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9,  buttonLogout;
+    private Button button1, button2, button3, button4, button5, button6, button7, button8, button9, button10, buttonLogout;
     private TextView textViewEmail;
     private String userEmail;
     private String userRole;
@@ -44,6 +44,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         button7 = findViewById(R.id.button7);
         button8 = findViewById(R.id.button8);
         button9 = findViewById(R.id.button9);
+        button10 = findViewById(R.id.button10);
         buttonLogout = findViewById(R.id.buttonLogout);
         textViewEmail = findViewById(R.id.textViewEmail);
 
@@ -116,9 +117,10 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setVisibility(View.VISIBLE);
                     button8.setVisibility(View.VISIBLE);
                     button9.setVisibility(View.VISIBLE);
+                    button10.setVisibility(View.VISIBLE);
 
                     button1.setText("Registrar estación");
-                    button2.setText("Atender cliente");
+                    button2.setText("Consultar reportes");
                     button3.setText("Ver estaciones");
                     button4.setText("Registrar precio combustible");
                     button5.setText("Ver precios combustible");
@@ -126,6 +128,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setText("Registrar venta de combustible");
                     button8.setText("Consultar historial de ventas");
                     button9.setText("Generar reporte mensual");
+                    button10.setText("Consultar reportes");
 
                     button1.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
@@ -133,9 +136,8 @@ public class RoleBaseActivity extends AppCompatActivity {
                     });
 
                     button2.setOnClickListener(v -> {
-                        Toast.makeText(RoleBaseActivity.this, "Función Atender cliente (próximamente)", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(this, ConsultarNotificacionActivity.class));
                     });
-
                     button3.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, ListaEstacionesActivity.class);
                         startActivity(intent);
@@ -166,6 +168,8 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button9.setOnClickListener(v -> {
                         startActivity(new Intent(this, ReporteMensualActivity.class));
                     });
+
+
 
                     break;
 
@@ -203,18 +207,15 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button3.setVisibility(View.VISIBLE);
                     button4.setVisibility(View.VISIBLE);
                     button1.setText("Ver normativas");
-                    button2.setText("Programar inspección");
+                    button2.setText("Enviar notificación de inconsistencias");
                     button3.setText("Registrar multa");
                     button4.setText("Generar reporte");
 
                     button1.setOnClickListener(v -> {
                         startActivity(new Intent(RoleBaseActivity.this, VerNormativasActivity.class));
                     });
-                    button2.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Toast.makeText(RoleBaseActivity.this, "Inspección (próximamente)", Toast.LENGTH_SHORT).show();
-                        }
+                    button2.setOnClickListener(v -> {
+                        startActivity(new Intent(RoleBaseActivity.this, NotificacionInconsistenciasActivity.class));
                     });
                     button3.setOnClickListener(new View.OnClickListener() {
                         @Override

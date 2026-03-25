@@ -13,7 +13,9 @@
         android:theme="@style/Theme.StationAdviser"
         tools:targetApi="31">
 
-        <!-- LOGIN -->
+        <activity
+            android:name=".Activities.NotificacionInconsistenciasActivity"
+            android:exported="false" /> <!-- LOGIN -->
         <activity
             android:name=".Activities.LoginActivity"
             android:exported="true">
@@ -37,7 +39,7 @@
         <activity android:name=".Activities.ReporteMensualActivity" /> <!-- 👇 ESTA ES LA NUEVA (AQUÍ VA) -->
         <activity android:name=".Activities.ConsultarDisponibilidadActivity" />
         <activity android:name=".Activities.VerNormativasActivity" />
-
+        <activity android:name=".Activities.ConsultarNotificacionActivity" />
     </application>
 
 </manifest>

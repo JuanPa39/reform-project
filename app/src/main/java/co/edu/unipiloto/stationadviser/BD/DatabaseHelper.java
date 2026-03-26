@@ -14,7 +14,7 @@ import co.edu.unipiloto.stationadviser.Model.Usuario;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 8;
 
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
@@ -72,11 +72,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_ESTADO + " TEXT,"
                     + COLUMN_FECHA + " TEXT"
                     + ")";
-
+    private static final String TABLE_REGLAS_SUBSIDIO = "reglas_subsidio";
+    private static final String COLUMN_TIPO_VEHICULO = "tipo_vehiculo";
+    private static final String COLUMN_LITROS_MAX = "litros_max";
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
-
+    private static final String CREAR_TABLA_REGLAS_SUBSIDIO =
+            "CREATE TABLE " + TABLE_REGLAS_SUBSIDIO + "("
+                    + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_TIPO_VEHICULO + " TEXT,"
+                    + COLUMN_TIPO_COMBUSTIBLE + " TEXT,"
+                    + COLUMN_LITROS_MAX + " REAL"
+                    + ")";
     @Override
     public void onCreate(SQLiteDatabase db) {
 
@@ -87,13 +95,120 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREAR_TABLA_VENTAS);
         db.execSQL(CREAR_TABLA_NORMATIVAS);
         db.execSQL(CREAR_TABLA_NOTIFICACIONES);
+        db.execSQL(CREAR_TABLA_REGLAS_SUBSIDIO);
 
         insertarUsuariosDePrueba(db);
         insertarEstacionesIniciales(db);
         insertarPreciosIniciales(db);
         insertarNormativasIniciales(db);
+        insertarVentasIniciales(db);
+        insertarReglasSubsidioIniciales(db);
     }
+    private void insertarReglasSubsidioIniciales(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
 
+        // ==================== GASOLINA CORRIENTE ====================
+        // Servicio Público (Taxis, Buses) - hasta 50 litros
+        values.put(COLUMN_TIPO_VEHICULO, "Taxi");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 50.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Servicio Público (Bus)");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 50.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Camión de carga");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 50.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // Particulares - hasta 10 litros
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Particular");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 10.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Oficial");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 10.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Diplomático");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 10.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // Moto - hasta 5 litros
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Moto");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Corriente");
+        values.put(COLUMN_LITROS_MAX, 5.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // ==================== ACPM (DIÉSEL) ====================
+        // Servicio Público (Taxis, Buses) - hasta 30 litros
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Taxi");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 30.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Servicio Público (Bus)");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 30.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Camión de carga");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 30.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // Particular, Oficial, Diplomático - SIN SUBSIDIO
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Particular");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 0.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Oficial");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 0.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Diplomático");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 0.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // Moto con Diesel - sin subsidio (poco común)
+        values.clear();
+        values.put(COLUMN_TIPO_VEHICULO, "Moto");
+        values.put(COLUMN_TIPO_COMBUSTIBLE, "Diesel");
+        values.put(COLUMN_LITROS_MAX, 0.0);
+        db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+
+        // ==================== GASOLINA EXTRA ====================
+        // Sin subsidio para todos los tipos
+        String[] todosLosTipos = {"Particular", "Taxi", "Servicio Público (Bus)", "Camión de carga", "Oficial", "Diplomático", "Moto"};
+        for (String tipo : todosLosTipos) {
+            values.clear();
+            values.put(COLUMN_TIPO_VEHICULO, tipo);
+            values.put(COLUMN_TIPO_COMBUSTIBLE, "Extra");
+            values.put(COLUMN_LITROS_MAX, 0.0);
+            db.insert(TABLE_REGLAS_SUBSIDIO, null, values);
+        }
+    }
     private void insertarUsuariosDePrueba(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
 
@@ -200,15 +315,42 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_ESTACION_ID, 3);
         db.insert(TABLE_PRECIOS, null, values);
     }
+    private void insertarVentasIniciales(SQLiteDatabase db) {
+        ContentValues values = new ContentValues();
+        // Venta 1
+        values.put(COLUMN_TIPO, "Corriente");
+        values.put(COLUMN_LITROS, 20.5);
+        values.put(COLUMN_PRECIO, 12000);
+        values.put(COLUMN_FECHA, "2025-03-25");
+        db.insert(TABLE_VENTAS, null, values);
 
+        values.clear();
+        // Venta 2
+        values.put(COLUMN_TIPO, "Extra");
+        values.put(COLUMN_LITROS, 15.0);
+        values.put(COLUMN_PRECIO, 14000);
+        values.put(COLUMN_FECHA, "2025-03-24");
+        db.insert(TABLE_VENTAS, null, values);
+
+        values.clear();
+        // Venta 3
+        values.put(COLUMN_TIPO, "Diesel");
+        values.put(COLUMN_LITROS, 30.2);
+        values.put(COLUMN_PRECIO, 11000);
+        values.put(COLUMN_FECHA, "2025-03-23");
+        db.insert(TABLE_VENTAS, null, values);
+    }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_PRECIOS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_ESTACIONES);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_USERS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NORMATIVAS);
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NOTIFICACIONES);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_INVENTARIO);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_VENTAS);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_REGLAS_SUBSIDIO);
+
         onCreate(db);
     }
 
@@ -528,20 +670,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return cantidad;
     }
 
-    public boolean aplicaSubsidio(String tipo, double litros){
+    public boolean aplicaSubsidio(String tipoVehiculo, String tipoCombustible, double litros) {
+        SQLiteDatabase db = this.getReadableDatabase();
 
-        // Reglas simples (puedes ajustarlas)
-        if(tipo.equalsIgnoreCase("Corriente") && litros <= 10){
-            return true;
+        String query = "SELECT " + COLUMN_LITROS_MAX + " FROM " + TABLE_REGLAS_SUBSIDIO
+                + " WHERE " + COLUMN_TIPO_VEHICULO + " = ? AND " + COLUMN_TIPO_COMBUSTIBLE + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{tipoVehiculo, tipoCombustible});
+
+        boolean aplica = false;
+        if (cursor.moveToFirst()) {
+            double litrosMax = cursor.getDouble(0);
+            aplica = litros <= litrosMax && litrosMax > 0;
         }
 
-        if(tipo.equalsIgnoreCase("Diesel") && litros <= 20){
-            return true;
-        }
-
-        return false;
+        cursor.close();
+        db.close();
+        return aplica;
     }
-
 
     private void insertarNormativasIniciales(SQLiteDatabase db) {
         ContentValues v = new ContentValues();

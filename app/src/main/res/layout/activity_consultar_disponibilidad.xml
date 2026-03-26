@@ -13,27 +13,62 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <!-- Spinner para tipo de combustible -->
+    <TextView
+        android:text="Tipo de combustible:"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <Spinner
         android:id="@+id/spinnerTipo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"/>
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginBottom="15dp"/>
+
+    <!-- Spinner para tipo de vehículo -->
+    <TextView
+        android:text="Tipo de vehículo:"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <Spinner
+        android:id="@+id/spinnerTipoVehiculo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:layout_marginBottom="15dp"/>
+
+    <!-- Campo para litros -->
+    <TextView
+        android:text="Litros a consultar:"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginBottom="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
     <EditText
         android:id="@+id/editLitros"
-        android:hint="Litros a consultar"
+        android:hint="Ej: 10.5"
         android:textColor="#FFFFFF"
         android:textColorHint="#B0BEC5"
         android:inputType="numberDecimal"
         android:backgroundTint="#FFFFFF"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/buttonConsultar"
         android:text="Consultar"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -77,12 +77,16 @@ public class RoleBaseActivity extends AppCompatActivity {
     }
 
     private void configurarBotonesPorRol() {
-        // Primero ocultar todos
         button1.setVisibility(View.GONE);
         button2.setVisibility(View.GONE);
         button3.setVisibility(View.GONE);
         button4.setVisibility(View.GONE);
         button5.setVisibility(View.GONE);
+        button6.setVisibility(View.GONE);
+        button7.setVisibility(View.GONE);
+        button8.setVisibility(View.GONE);
+        button9.setVisibility(View.GONE);
+        button10.setVisibility(View.GONE);
 
         Log.d(TAG, "Configurando botones para rol: " + userRole);
 
@@ -169,8 +173,6 @@ public class RoleBaseActivity extends AppCompatActivity {
                         startActivity(new Intent(this, ReporteMensualActivity.class));
                     });
 
-
-
                     break;
 
                 case "Equipo técnico":
@@ -229,6 +231,23 @@ public class RoleBaseActivity extends AppCompatActivity {
                             Toast.makeText(RoleBaseActivity.this, "Reportes (próximamente)", Toast.LENGTH_SHORT).show();
                         }
                     });
+                    break;
+
+                case "Distribuidor":
+                    button1.setVisibility(View.VISIBLE);
+                    button2.setVisibility(View.VISIBLE);
+                    button3.setVisibility(View.VISIBLE);
+
+                    button1.setText("Ver precios combustible");
+                    button2.setText("Consultar historial de ventas");
+                    button3.setText("Consultar disponibilidad");
+
+                    button1.setOnClickListener(v ->
+                            startActivity(new Intent(this, ConsultarPrecioActivity.class)));
+                    button2.setOnClickListener(v ->
+                            startActivity(new Intent(this, HistorialVentasActivity.class)));
+                    button3.setOnClickListener(v ->
+                            startActivity(new Intent(this, ConsultarDisponibilidadActivity.class)));
                     break;
 
                 default:

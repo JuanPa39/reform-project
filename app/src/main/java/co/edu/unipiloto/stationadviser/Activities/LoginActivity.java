@@ -3,12 +3,10 @@ package co.edu.unipiloto.stationadviser.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.*;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.List;
 
@@ -18,116 +16,74 @@ import co.edu.unipiloto.stationadviser.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-    private static final String TAG = "LoginActivity"; // Para logs
-    private DatabaseHelper dbHelper;
-    private EditText editTextCorreo, editTextContrasena;
-    private Button buttonLogin;
-    private TextView textViewMensaje;
-    private TextView textRegistro;
+    private static final String TAG = "LoginActivity";
 
-    private TextView textRecuperar;
+    private DatabaseHelper dbHelper;
+    private TextInputEditText editTextCorreo, editTextContrasena;
+    private Button buttonLogin;
+    private TextView textViewMensaje, textRegistro, textRecuperar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        Log.d(TAG, "onCreate: Iniciando LoginActivity");
-
-        // Inicializar base de datos
         dbHelper = new DatabaseHelper(this);
-        verificarUsuariosEnBD();
-        // Conectar con los elementos del layout
-        editTextCorreo = findViewById(R.id.editTextCorreo);
+
+        editTextCorreo    = findViewById(R.id.editTextCorreo);
         editTextContrasena = findViewById(R.id.editTextContrasena);
-        buttonLogin = findViewById(R.id.buttonLogin);
-        textViewMensaje = findViewById(R.id.textViewMensaje);
-        textRegistro = findViewById(R.id.textRegistro);
+        buttonLogin       = findViewById(R.id.buttonLogin);
+        textViewMensaje   = findViewById(R.id.textViewMensaje);
+        textRegistro      = findViewById(R.id.textRegistro);
+        textRecuperar     = findViewById(R.id.textRecuperar);
 
-        // Verificar que los elementos no sean null
-        if (editTextCorreo == null) Log.e(TAG, "editTextCorreo es NULL");
-        if (editTextContrasena == null) Log.e(TAG, "editTextContrasena es NULL");
-        if (buttonLogin == null) Log.e(TAG, "buttonLogin es NULL");
+        verificarUsuariosEnBD();
 
-        // Configurar botón de login
-        buttonLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(TAG, "Botón login clickeado");
-                iniciarSesion();
-            }
-        });
+        buttonLogin.setOnClickListener(v -> iniciarSesion());
 
-        //Configurar boton de registro
-        textRegistro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        textRegistro.setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterActivity.class)));
 
-                Log.d(TAG, "Ir a pantalla de registro");
-
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        //Configurar boton recuperar contraseña
-        textRecuperar = findViewById(R.id.textRecuperar);
-
-        textRecuperar.setOnClickListener(v -> {
-
-            Intent intent = new Intent(LoginActivity.this, ResetPasswordActivity.class);
-            startActivity(intent);
-
-        });
+        textRecuperar.setOnClickListener(v ->
+                startActivity(new Intent(this, ResetPasswordActivity.class)));
     }
-    // Agrega este método después de onCreate
+
     private void verificarUsuariosEnBD() {
         List<Usuario> usuarios = dbHelper.obtenerTodosLosUsuarios();
-        Log.d(TAG, "=== USUARIOS EN BD ===");
         for (Usuario u : usuarios) {
-            Log.d(TAG, "ID: " + u.getId() +
-                    ", Correo: " + u.getCorreo() +
-                    ", Contraseña: " + u.getContrasena() +
-                    ", Rol: " + u.getRol());
+            Log.d(TAG, "Correo: " + u.getCorreo() + " Rol: " + u.getRol());
         }
-        Log.d(TAG, "========================");
     }
-    private void iniciarSesion() {
 
-        String correo = editTextCorreo.getText().toString().trim();
-        String contrasena = editTextContrasena.getText().toString().trim();
+    private void iniciarSesion() {
+        String correo    = editTextCorreo.getText() != null
+                ? editTextCorreo.getText().toString().trim() : "";
+        String contrasena = editTextContrasena.getText() != null
+                ? editTextContrasena.getText().toString().trim() : "";
 
         if (correo.isEmpty() || contrasena.isEmpty()) {
             textViewMensaje.setText("Ingrese correo y contraseña");
             return;
         }
 
-        // Buscar usuario solo por correo
         Usuario usuario = dbHelper.obtenerUsuarioPorCorreo(correo);
 
         if (usuario == null) {
-
             textViewMensaje.setText("El correo no está registrado");
-
-        } else {
-
-            if (!usuario.getContrasena().equals(contrasena)) {
-
-                textViewMensaje.setText("La contraseña es incorrecta");
-
-            } else {
-
-                // LOGIN CORRECTO
-                Toast.makeText(this, "Bienvenido " + usuario.getRol(), Toast.LENGTH_SHORT).show();
-
-                Intent intent = new Intent(LoginActivity.this, RoleBaseActivity.class);
-                intent.putExtra("email", usuario.getCorreo());
-                intent.putExtra("role", usuario.getRol());
-
-                startActivity(intent);
-                finish();
-            }
+            return;
         }
-    }
 
+        if (!usuario.getContrasena().equals(contrasena)) {
+            textViewMensaje.setText("La contraseña es incorrecta");
+            return;
+        }
+
+        Toast.makeText(this, "Bienvenido " + usuario.getRol(), Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(this, RoleBaseActivity.class);
+        intent.putExtra("email", usuario.getCorreo());
+        intent.putExtra("role", usuario.getRol());
+        startActivity(intent);
+        finish();
+    }
 }

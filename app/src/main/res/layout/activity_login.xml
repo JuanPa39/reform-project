@@ -1,32 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1A2E4A"
+    android:background="#0F1F35"
+    android:fillViewport="true"
     tools:context=".LoginActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="28dp">
+        android:paddingHorizontal="28dp"
+        android:paddingTop="60dp"
+        android:paddingBottom="40dp">
 
-        <!-- Logo / Icono superior -->
-        <LinearLayout
-            android:layout_width="72dp"
-            android:layout_height="72dp"
-            android:background="#1E3A6E"
-            android:gravity="center"
+        <!-- Logo -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="60dp"
-            android:layout_marginBottom="24dp">
+            android:layout_marginBottom="28dp"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="#1E3A6E"
+            app:cardElevation="8dp">
 
-            <View
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:background="#4FC3F7"/>
-        </LinearLayout>
+            <ImageView
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_local_gas_station"
+                android:tint="#4FC3F7"/>
+        </androidx.cardview.widget.CardView>
 
         <!-- Título -->
         <TextView
@@ -37,7 +43,7 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:gravity="center"
-            android:letterSpacing="0.01"/>
+            android:fontFamily="sans-serif-medium"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -45,88 +51,117 @@
             android:text="de Servicio"
             android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="#FFFFFF"
+            android:textColor="#4FC3F7"
             android:gravity="center"
-            android:layout_marginBottom="40dp"/>
+            android:layout_marginBottom="40dp"
+            android:fontFamily="sans-serif-medium"/>
 
-        <!-- Sección correo -->
+        <!-- CORREO -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CORREO ELECTRÓNICO"
             android:textSize="11sp"
-            android:textColor="#FFFFFF"
-            android:letterSpacing="0.08"
-            android:layout_marginBottom="8dp"/>
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/editTextCorreo"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:hint="ejemplo@correo.com"
-            android:textColor="#FFFFFF"
-            android:inputType="textEmailAddress"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="#243B5E"
-            android:layout_marginBottom="20dp"/>
+            android:layout_marginBottom="20dp"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_email"
+            app:startIconTint="#4FC3F7">
 
-        <!-- Sección contraseña -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textEmailAddress"
+                android:paddingHorizontal="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- CONTRASEÑA -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="CONTRASEÑA"
             android:textSize="11sp"
-            android:textColor="#FFFFFF"
-            android:letterSpacing="0.08"
-            android:layout_marginBottom="8dp"/>
+            android:letterSpacing="0.1"
+            android:textColor="#90A4AE"
+            android:layout_marginBottom="6dp"
+            android:fontFamily="sans-serif-medium"/>
 
-        <EditText
-            android:id="@+id/editTextContrasena"
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="wrap_content"
             android:hint="••••••••"
-            android:textColor="#FFFFFF"
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="#243B5E"
-            android:layout_marginBottom="8dp"/>
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:boxStrokeColor="#2A4A72"
+            app:boxBackgroundColor="#172A45"
+            app:hintTextColor="#4FC3F7"
+            app:startIconDrawable="@drawable/ic_lock"
+            app:startIconTint="#4FC3F7"
+            app:endIconMode="password_toggle"
+            app:endIconTint="#546E7A">
 
-        <!-- Recuperar contraseña -->
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/editTextContrasena"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#546E7A"
+                android:inputType="textPassword"
+                android:paddingHorizontal="16dp"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <!-- Olvidaste tu contraseña -->
         <TextView
             android:id="@+id/textRecuperar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="¿Olvidaste tu contraseña?"
-            android:textColor="#FFFFFF"
+            android:textColor="#4FC3F7"
             android:textSize="13sp"
             android:gravity="end"
+            android:layout_marginTop="10dp"
             android:layout_marginBottom="32dp"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="4dp"/>
 
-        <!-- Botón principal -->
-        <Button
+        <!-- Botón Iniciar Sesión -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/buttonLogin"
             android:layout_width="match_parent"
-            android:layout_height="52dp"
+            android:layout_height="54dp"
             android:text="INICIAR SESIÓN"
-            android:textSize="14sp"
-            android:textStyle="bold"
             android:textColor="#FFFFFF"
-            android:letterSpacing="0.06"
-            android:backgroundTint="#1565C0"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="15sp"
+            android:letterSpacing="0.08"
+            android:fontFamily="sans-serif-medium"
+            android:layout_marginBottom="16dp"
+            app:backgroundTint="#1565C0"
+            app:cornerRadius="12dp"
+            app:elevation="4dp"/>
 
-        <!-- Mensaje error -->
+        <!-- Mensaje error/info -->
         <TextView
             android:id="@+id/textViewMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
             android:text=""
-            android:textColor="#FFFFFF"
+            android:textColor="#EF5350"
             android:textSize="13sp"
+            android:gravity="center"
             android:layout_marginBottom="16dp"/>
 
         <!-- Separador -->
@@ -135,29 +170,30 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginBottom="20dp">
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="8dp">
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#2E5080"/>
+                android:background="#1E3A5F"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="  o  "
-                android:textColor="#FFFFFF"
+                android:textColor="#546E7A"
                 android:textSize="13sp"/>
 
             <View
                 android:layout_width="0dp"
                 android:layout_height="1dp"
                 android:layout_weight="1"
-                android:background="#2E5080"/>
+                android:background="#1E3A5F"/>
         </LinearLayout>
 
-        <!-- Registro -->
+        <!-- Link Registro -->
         <TextView
             android:id="@+id/textRegistro"
             android:layout_width="match_parent"
@@ -167,7 +203,9 @@
             android:textStyle="bold"
             android:textSize="14sp"
             android:gravity="center"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true"
+            android:padding="8dp"/>
 
     </LinearLayout>
 </ScrollView>

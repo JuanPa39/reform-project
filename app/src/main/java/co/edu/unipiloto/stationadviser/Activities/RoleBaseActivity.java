@@ -132,7 +132,6 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setText("Registrar venta de combustible");
                     button8.setText("Consultar historial de ventas");
                     button9.setText("Generar reporte mensual");
-                    button10.setText("Consultar reportes");
 
                     button1.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);

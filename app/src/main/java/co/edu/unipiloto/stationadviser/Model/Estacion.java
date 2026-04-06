@@ -5,12 +5,26 @@ public class Estacion {
     private String nombre;
     private String nit;
     private String ubicacion;
+    private String latitud;
+    private String longitud;
 
-    public Estacion(int id, String nombre, String nit, String ubicacion) {
+    // Constructor completo
+    public Estacion(int id, String nombre, String nit, String ubicacion, String latitud, String longitud) {
         this.id = id;
         this.nombre = nombre;
         this.nit = nit;
         this.ubicacion = ubicacion;
+        this.latitud = latitud;
+        this.longitud = longitud;
+    }
+
+    // Constructor sin ID (para nuevas estaciones)
+    public Estacion(String nombre, String nit, String ubicacion, String latitud, String longitud) {
+        this.nombre = nombre;
+        this.nit = nit;
+        this.ubicacion = ubicacion;
+        this.latitud = latitud;
+        this.longitud = longitud;
     }
 
     // Getters y Setters
@@ -25,4 +39,10 @@ public class Estacion {
 
     public String getUbicacion() { return ubicacion; }
     public void setUbicacion(String ubicacion) { this.ubicacion = ubicacion; }
+
+    public String getLatitud() { return latitud; }
+    public void setLatitud(String latitud) { this.latitud = latitud; }
+
+    public String getLongitud() { return longitud; }
+    public void setLongitud(String longitud) { this.longitud = longitud; }
 }

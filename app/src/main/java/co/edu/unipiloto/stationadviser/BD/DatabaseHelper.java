@@ -14,8 +14,10 @@ import co.edu.unipiloto.stationadviser.Model.Usuario;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 8;
-
+    private static final int DATABASE_VERSION = 9;
+    // Agregar estas constantes
+    private static final String COLUMN_LATITUD = "latitud";
+    private static final String COLUMN_LONGITUD = "longitud";
     private static final String TABLE_USERS = "users";
     private static final String COLUMN_ID = "id";
     private static final String COLUMN_CORREO = "correo";
@@ -294,25 +296,33 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
         return lista;
     }
-    private void insertarEstacionesIniciales(SQLiteDatabase db){
-
+    private void insertarEstacionesIniciales(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
 
+        // Terpel Norte - Bogotá (4.7110, -74.0721)
         values.put(COLUMN_NOMBRE, "Terpel Norte");
         values.put(COLUMN_NIT, "900123");
         values.put(COLUMN_UBICACION, "Bogotá");
+        values.put(COLUMN_LATITUD, "4.7110");
+        values.put(COLUMN_LONGITUD, "-74.0721");
         db.insert(TABLE_ESTACIONES, null, values);
 
         values.clear();
+        // Primax Centro - Medellín (6.2442, -75.5812)
         values.put(COLUMN_NOMBRE, "Primax Centro");
         values.put(COLUMN_NIT, "900456");
         values.put(COLUMN_UBICACION, "Medellín");
+        values.put(COLUMN_LATITUD, "6.2442");
+        values.put(COLUMN_LONGITUD, "-75.5812");
         db.insert(TABLE_ESTACIONES, null, values);
 
         values.clear();
+        // Texaco Sur - Cali (3.4516, -76.5320)
         values.put(COLUMN_NOMBRE, "Texaco Sur");
         values.put(COLUMN_NIT, "900789");
         values.put(COLUMN_UBICACION, "Cali");
+        values.put(COLUMN_LATITUD, "3.4516");
+        values.put(COLUMN_LONGITUD, "-76.5320");
         db.insert(TABLE_ESTACIONES, null, values);
     }
 
@@ -440,16 +450,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return usuario;
     }
     // Método para agregar estación
-    public boolean addEstacion(String nombre, String nit, String ubicacion) {
+    public boolean addEstacion(String nombre, String nit, String ubicacion, String latitud, String longitud) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_NOMBRE, nombre);
         values.put(COLUMN_NIT, nit);
         values.put(COLUMN_UBICACION, ubicacion);
+        values.put(COLUMN_LATITUD, latitud);
+        values.put(COLUMN_LONGITUD, longitud);
 
         long resultado = db.insert(TABLE_ESTACIONES, null, values);
         db.close();
-        return resultado != -1; // false si el NIT ya existe (por la restricción UNIQUE)
+        return resultado != -1;
     }
     public List<Usuario> obtenerTodosLosUsuarios() {
         List<Usuario> listaUsuarios = new ArrayList<>();
@@ -484,7 +496,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE));
             String nit = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIT));
             String ubicacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UBICACION));
-            estacion = new Estacion(id, nombre, nit, ubicacion);
+            String latitud = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LATITUD));
+            String longitud = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LONGITUD));
+            estacion = new Estacion(id, nombre, nit, ubicacion, latitud, longitud);
         }
         cursor.close();
         db.close();
@@ -513,7 +527,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 String nombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE));
                 String nit = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NIT));
                 String ubicacion = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_UBICACION));
-                lista.add(new Estacion(id, nombre, nit, ubicacion));
+                String latitud = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LATITUD));
+                String longitud = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_LONGITUD));
+                lista.add(new Estacion(id, nombre, nit, ubicacion, latitud, longitud));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -791,8 +807,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_ID_EST + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_NOMBRE + " TEXT,"
             + COLUMN_NIT + " TEXT UNIQUE,"
-            + COLUMN_UBICACION + " TEXT" + ")";
-
+            + COLUMN_UBICACION + " TEXT,"
+            + COLUMN_LATITUD + " TEXT,"
+            + COLUMN_LONGITUD + " TEXT" + ")";
     private static final String CREAR_TABLA_PRECIOS = "CREATE TABLE " + TABLE_PRECIOS + "("
             + COLUMN_ID_PRECIO + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_TIPO_COMBUSTIBLE + " TEXT,"

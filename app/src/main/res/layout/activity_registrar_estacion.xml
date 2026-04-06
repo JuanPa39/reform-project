@@ -84,7 +84,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="UBICACIÓN"
+            android:text="UBICACIÓN (DIRECCIÓN)"
             android:textSize="11sp"
             android:textColor="#FFFFFF"
             android:letterSpacing="0.08"
@@ -100,8 +100,116 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
             android:background="#243B5E"
-            android:layout_marginBottom="32dp"/>
+            android:layout_marginBottom="20dp"/>
 
+        <!-- Separador para GPS -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#4FC3F7"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp"/>
+
+        <!-- Coordenadas GPS -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="COORDENADAS GPS"
+            android:textSize="11sp"
+            android:textColor="#4FC3F7"
+            android:letterSpacing="0.08"
+            android:layout_marginBottom="8dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Obligatorio para geolocalización"
+            android:textSize="11sp"
+            android:textColor="#FFFFFF"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Latitud y Longitud (en fila horizontal) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="2">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginEnd="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LATITUD"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/editTextLatitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Ej: 4.7110"
+                    android:textColor="#FFFFFF"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:background="#243B5E"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="LONGITUD"
+                    android:textSize="11sp"
+                    android:textColor="#FFFFFF"
+                    android:letterSpacing="0.08"
+                    android:layout_marginBottom="8dp"/>
+
+                <EditText
+                    android:id="@+id/editTextLongitud"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:hint="Ej: -74.0721"
+                    android:textColor="#FFFFFF"
+                    android:inputType="numberDecimal"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:background="#243B5E"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Botón para obtener ubicación actual -->
+        <Button
+            android:id="@+id/buttonObtenerUbicacion"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="📍 OBTENER UBICACIÓN ACTUAL"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            android:textColor="#FFFFFF"
+            android:letterSpacing="0.06"
+            android:backgroundTint="#4FC3F7"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="28dp"/>
+
+        <!-- Botón Registrar -->
         <Button
             android:id="@+id/buttonRegistrar"
             android:layout_width="match_parent"
@@ -114,14 +222,16 @@
             android:backgroundTint="#1565C0"
             android:layout_marginBottom="16dp"/>
 
+        <!-- Mensaje de error/éxito -->
         <TextView
             android:id="@+id/textViewMensaje"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text=""
-            android:textColor="#FFFFFF"
-            android:textSize="13sp"/>
+            android:textColor="#FF6B6B"
+            android:textSize="13sp"
+            android:layout_marginBottom="20dp"/>
 
     </LinearLayout>
 </ScrollView>

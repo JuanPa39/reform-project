@@ -10,6 +10,8 @@ import java.util.Locale;
 
 import co.edu.unipiloto.stationadviser.BD.DatabaseHelper;
 import co.edu.unipiloto.stationadviser.R;
+import android.content.Intent;
+import co.edu.unipiloto.stationadviser.Activities.FacturaElectronicaActivity;
 
 public class RegistrarVentaActivity extends AppCompatActivity {
 
@@ -61,10 +63,24 @@ public class RegistrarVentaActivity extends AppCompatActivity {
 
             if(resultado){
                 Toast.makeText(this,"Venta registrada",Toast.LENGTH_SHORT).show();
+
+                // Generar número único de factura (puede venir de la BD o ser timestamp)
+                String numeroFactura = "INV-" + System.currentTimeMillis();
+
+                // Iniciar actividad de factura electrónica
+                Intent facturaIntent = new Intent(RegistrarVentaActivity.this, FacturaElectronicaActivity.class);
+                facturaIntent.putExtra("numeroFactura", numeroFactura);
+                facturaIntent.putExtra("fecha", fecha);
+                facturaIntent.putExtra("tipo", tipo);
+                facturaIntent.putExtra("litros", litros);
+                facturaIntent.putExtra("precioUnitario", precio);
+                startActivity(facturaIntent);
+
+                // Limpiar campos (opcional, porque el usuario puede volver)
                 editLitros.setText("");
                 editPrecio.setText("");
             }else{
-                Toast.makeText(this,"Error",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,"Error al registrar venta",Toast.LENGTH_SHORT).show();
             }
         });
     }

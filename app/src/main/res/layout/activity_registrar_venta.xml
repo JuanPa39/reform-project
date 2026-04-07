@@ -29,7 +29,7 @@
 
     <EditText
         android:id="@+id/editPrecio"
-        android:hint="Precio total"
+        android:hint="Precio unitario"
         android:backgroundTint="#FFFFFF"
         android:layout_marginTop="10dp"
         android:inputType="numberDecimal"

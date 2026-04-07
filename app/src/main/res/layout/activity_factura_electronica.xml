@@ -84,13 +84,15 @@
             android:textStyle="bold"
             android:textColor="#D32F2F"
             android:layout_marginBottom="24dp" />
-
         <Button
-            android:id="@+id/btnCompartir"
+            android:id="@+id/buttonCompartirPdf"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Compartir factura"
-            android:layout_marginBottom="8dp" />
+            android:text="Compartir PDF"
+            android:backgroundTint="#1565C0"
+            android:textColor="@android:color/white"
+            android:layout_margin="16dp" />
+
 
         <Button
             android:id="@+id/btnFinalizar"

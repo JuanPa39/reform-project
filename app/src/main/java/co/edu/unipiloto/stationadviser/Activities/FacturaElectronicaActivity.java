@@ -1,87 +1,86 @@
 package co.edu.unipiloto.stationadviser.Activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
+
+import java.io.File;
 
 import co.edu.unipiloto.stationadviser.R;
 
 public class FacturaElectronicaActivity extends AppCompatActivity {
-
-    private TextView tvNumeroFactura, tvFecha, tvTipoCombustible, tvLitros,
-            tvPrecioUnitario, tvSubtotal, tvIva, tvTotal;
-    private Button btnCompartir, btnFinalizar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_factura_electronica);
 
-        tvNumeroFactura = findViewById(R.id.tvNumeroFactura);
-        tvFecha = findViewById(R.id.tvFecha);
-        tvTipoCombustible = findViewById(R.id.tvTipoCombustible);
-        tvLitros = findViewById(R.id.tvLitros);
-        tvPrecioUnitario = findViewById(R.id.tvPrecioUnitario);
-        tvSubtotal = findViewById(R.id.tvSubtotal);
-        tvIva = findViewById(R.id.tvIva);
-        tvTotal = findViewById(R.id.tvTotal);
-        btnCompartir = findViewById(R.id.btnCompartir);
-        btnFinalizar = findViewById(R.id.btnFinalizar);
-
-        // Recibir datos del Intent
-        Intent intent = getIntent();
-        String numeroFactura = intent.getStringExtra("numeroFactura");
-        String fecha = intent.getStringExtra("fecha");
-        String tipo = intent.getStringExtra("tipo");
-        double litros = intent.getDoubleExtra("litros", 0);
-        double precioUnitario = intent.getDoubleExtra("precioUnitario", 0);
+        // Recibir datos
+        String numeroFactura = getIntent().getStringExtra("numeroFactura");
+        String fecha         = getIntent().getStringExtra("fecha");
+        String tipo          = getIntent().getStringExtra("tipo");
+        double litros        = getIntent().getDoubleExtra("litros", 0);
+        double precio        = getIntent().getDoubleExtra("precioUnitario", 0);
 
         // Calcular valores
-        double subtotal = litros * precioUnitario;
-        double iva = subtotal * 0.19; // 19% de IVA
-        double total = subtotal + iva;
+        double subtotal = litros * precio;
+        double iva      = subtotal * 0.19;
+        double total    = subtotal + iva;
 
-        // Mostrar datos
-        tvNumeroFactura.setText("Número de factura: " + numeroFactura);
+        // Conectar TextViews
+        TextView tvNumero   = findViewById(R.id.tvNumeroFactura);
+        TextView tvFecha    = findViewById(R.id.tvFecha);
+        TextView tvTipo     = findViewById(R.id.tvTipoCombustible);
+        TextView tvLitros   = findViewById(R.id.tvLitros);
+        TextView tvPrecio   = findViewById(R.id.tvPrecioUnitario);
+        TextView tvSubtotal = findViewById(R.id.tvSubtotal);
+        TextView tvIva      = findViewById(R.id.tvIva);
+        TextView tvTotal    = findViewById(R.id.tvTotal);
+
+        // Asignar valores a la pantalla
+        tvNumero.setText("Número: " + numeroFactura);
         tvFecha.setText("Fecha: " + fecha);
-        tvTipoCombustible.setText("Tipo de combustible: " + tipo);
-        tvLitros.setText(String.format("Litros: %.2f", litros));
-        tvPrecioUnitario.setText(String.format("Precio unitario: $%.2f", precioUnitario));
-        tvSubtotal.setText(String.format("Subtotal: $%.2f", subtotal));
-        tvIva.setText(String.format("IVA (19%%): $%.2f", iva));
-        tvTotal.setText(String.format("TOTAL: $%.2f", total));
+        tvTipo.setText("Tipo: " + tipo);
+        tvLitros.setText(String.format("Litros: %.2f L", litros));
+        tvPrecio.setText(String.format("Precio unitario: $ %.2f", precio));
+        tvSubtotal.setText(String.format("Subtotal: $ %.2f", subtotal));
+        tvIva.setText(String.format("IVA (19%%): $ %.2f", iva));
+        tvTotal.setText(String.format("TOTAL: $ %.2f", total));
 
-        // Compartir factura como texto
+        // Botón compartir PDF
+        Button btnCompartir = findViewById(R.id.buttonCompartirPdf);
         btnCompartir.setOnClickListener(v -> {
-            String facturaTexto = generarTextoFactura(numeroFactura, fecha, tipo,
-                    litros, precioUnitario, subtotal, iva, total);
-            Intent shareIntent = new Intent(Intent.ACTION_SEND);
-            shareIntent.setType("text/plain");
-            shareIntent.putExtra(Intent.EXTRA_TEXT, facturaTexto);
-            startActivity(Intent.createChooser(shareIntent, "Compartir factura"));
+            try {
+                File pdfFile = PdfGenerator.generarFacturaPdf(
+                        this, numeroFactura, fecha, tipo, litros, precio
+                );
+
+                Uri pdfUri = FileProvider.getUriForFile(
+                        this,
+                        getApplicationContext().getPackageName() + ".fileprovider",
+                        pdfFile
+                );
+
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                shareIntent.setType("application/pdf");
+                shareIntent.putExtra(Intent.EXTRA_STREAM, pdfUri);
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, "Factura " + numeroFactura);
+                shareIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+                startActivity(Intent.createChooser(shareIntent, "Compartir factura via..."));
+
+            } catch (Exception e) {
+                Toast.makeText(this, "Error al generar PDF: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            }
         });
 
-        // Finalizar y volver a la pantalla principal
-        btnFinalizar.setOnClickListener(v -> {
-            finish();
-        });
-    }
-
-    private String generarTextoFactura(String numero, String fecha, String tipo,
-                                       double litros, double precioUnitario,
-                                       double subtotal, double iva, double total) {
-        return "=== FACTURA ELECTRÓNICA ===\n" +
-                "Número: " + numero + "\n" +
-                "Fecha: " + fecha + "\n" +
-                "Combustible: " + tipo + "\n" +
-                "Litros: " + String.format("%.2f", litros) + "\n" +
-                "Precio unitario: $" + String.format("%.2f", precioUnitario) + "\n" +
-                "Subtotal: $" + String.format("%.2f", subtotal) + "\n" +
-                "IVA (19%): $" + String.format("%.2f", iva) + "\n" +
-                "TOTAL: $" + String.format("%.2f", total) + "\n" +
-                "¡Gracias por su compra!";
+        // Botón finalizar
+        Button btnFinalizar = findViewById(R.id.btnFinalizar);
+        btnFinalizar.setOnClickListener(v -> finish());
     }
 }

@@ -13,7 +13,7 @@ import java.io.IOException;
 public class PdfGenerator {
 
     public static File generarFacturaPdf(Context context, String numeroFactura,
-                                         String fecha, String tipo,
+                                         String fecha, String estacion, String tipo,
                                          double litros, double precioUnitario) throws IOException {
 
         PdfDocument document = new PdfDocument();
@@ -56,6 +56,10 @@ public class PdfGenerator {
         canvas.drawText("Fecha:", margin, y, paintLabel);
         canvas.drawText(fecha, 200, y, paintValue);
         y += 40;
+
+        canvas.drawText("Estación:", margin, y, paintLabel);
+        canvas.drawText(estacion, 200, y, paintValue);
+        y += 25;
 
         // — Línea separadora sección
         Paint paintGray = new Paint();

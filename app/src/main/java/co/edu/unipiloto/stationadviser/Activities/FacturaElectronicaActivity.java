@@ -24,6 +24,7 @@ public class FacturaElectronicaActivity extends AppCompatActivity {
         String numeroFactura = getIntent().getStringExtra("numeroFactura");
         String fecha         = getIntent().getStringExtra("fecha");
         String tipo          = getIntent().getStringExtra("tipo");
+        String estacion      = getIntent().getStringExtra("estacion");
         double litros        = getIntent().getDoubleExtra("litros", 0);
         double precio        = getIntent().getDoubleExtra("precioUnitario", 0);
 
@@ -34,6 +35,7 @@ public class FacturaElectronicaActivity extends AppCompatActivity {
 
         // Conectar TextViews
         TextView tvNumero   = findViewById(R.id.tvNumeroFactura);
+        TextView tvEstacion = findViewById(R.id.tvEstacion);        // NUEVO
         TextView tvFecha    = findViewById(R.id.tvFecha);
         TextView tvTipo     = findViewById(R.id.tvTipoCombustible);
         TextView tvLitros   = findViewById(R.id.tvLitros);
@@ -44,6 +46,7 @@ public class FacturaElectronicaActivity extends AppCompatActivity {
 
         // Asignar valores a la pantalla
         tvNumero.setText("Número: " + numeroFactura);
+        tvEstacion.setText("Estación: " + estacion);               // NUEVO
         tvFecha.setText("Fecha: " + fecha);
         tvTipo.setText("Tipo: " + tipo);
         tvLitros.setText(String.format("Litros: %.2f L", litros));
@@ -57,7 +60,7 @@ public class FacturaElectronicaActivity extends AppCompatActivity {
         btnCompartir.setOnClickListener(v -> {
             try {
                 File pdfFile = PdfGenerator.generarFacturaPdf(
-                        this, numeroFactura, fecha, tipo, litros, precio
+                        this, numeroFactura, fecha, estacion, tipo, litros, precio // ACTUALIZADO
                 );
 
                 Uri pdfUri = FileProvider.getUriForFile(

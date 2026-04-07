@@ -96,9 +96,11 @@ public class RoleBaseActivity extends AppCompatActivity {
 
                     button1.setVisibility(View.VISIBLE);
                     button2.setVisibility(View.VISIBLE);
+                    button3.setVisibility(View.VISIBLE);
 
                     button1.setText("Consultar precio combustible");
                     button2.setText("Consultar disponibilidad");
+                    button3.setText("Descargar comprobante de compra");
 
                     button1.setOnClickListener(v -> {
                         startActivity(new Intent(this, ConsultarPrecioActivity.class));
@@ -106,6 +108,10 @@ public class RoleBaseActivity extends AppCompatActivity {
 
                     button2.setOnClickListener(v -> {
                         startActivity(new Intent(this, ConsultarDisponibilidadActivity.class));
+                    });
+
+                    button3.setOnClickListener(v -> {
+                        startActivity(new Intent(this, DescargarComprobanteActivity.class));
                     });
 
                     break;

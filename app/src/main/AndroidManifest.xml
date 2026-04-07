@@ -4,6 +4,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <application
         android:allowBackup="true"
@@ -15,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.StationAdviser"
         tools:targetApi="31">
+        <activity
+            android:name=".Activities.DescargarComprobanteActivity"
+            android:exported="false" />
         <activity
             android:name=".Activities.FacturaElectronicaActivity"
             android:exported="false" />
@@ -45,6 +51,7 @@
         <activity android:name=".Activities.ConsultarDisponibilidadActivity" />
         <activity android:name=".Activities.VerNormativasActivity" />
         <activity android:name=".Activities.ConsultarNotificacionActivity" />
+
 
         <provider
             android:name="androidx.core.content.FileProvider"

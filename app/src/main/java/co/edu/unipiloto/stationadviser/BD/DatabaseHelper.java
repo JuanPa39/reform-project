@@ -10,6 +10,7 @@ import java.util.List;
 
 import co.edu.unipiloto.stationadviser.Model.Estacion;
 import co.edu.unipiloto.stationadviser.Model.Usuario;
+import co.edu.unipiloto.stationadviser.Rules.ReglasCombustible;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -802,6 +803,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return lista;
+    }
+    /**
+     * Verifica el nivel actual de un tipo de combustible
+     * @return cantidad disponible, o -1 si no hay registro
+     */
+    public int verificarNivelCombustible(String tipoCombustible) {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Usar SUM para obtener el total si hay múltiples registros del mismo tipo
+        String query = "SELECT SUM(" + COLUMN_CANTIDAD + ") FROM " + TABLE_INVENTARIO
+                + " WHERE " + COLUMN_TIPO + " = ?";
+
+        Cursor cursor = db.rawQuery(query, new String[]{tipoCombustible});
+
+        int cantidad = 0;
+        if (cursor.moveToFirst()) {
+            cantidad = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+        return cantidad;
+    }
+
+    /**
+     * Verifica todos los tipos de combustible y genera alertas
+     * @return Lista de mensajes de alerta
+     */
+    public List<String> verificarTodosLosNiveles() {
+        List<String> alertas = new ArrayList<>();
+        String[] tipos = {"Corriente", "Extra", "Diesel"};
+
+        for (String tipo : tipos) {
+            int cantidad = verificarNivelCombustible(tipo);
+            if (cantidad >= 0) {
+                if (ReglasCombustible.isNivelBajo(tipo, cantidad)) {
+                    alertas.add(ReglasCombustible.getMensajeAlerta(tipo, cantidad));
+                }
+            }
+        }
+        return alertas;
     }
     private static final String CREAR_TABLA_ESTACIONES = "CREATE TABLE " + TABLE_ESTACIONES + "("
             + COLUMN_ID_EST + " INTEGER PRIMARY KEY AUTOINCREMENT,"

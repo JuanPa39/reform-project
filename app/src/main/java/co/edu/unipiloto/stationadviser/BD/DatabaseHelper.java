@@ -15,8 +15,8 @@ import co.edu.unipiloto.stationadviser.Rules.ReglasCombustible;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 9;
-    // Agregar estas constantes
+    private static final int DATABASE_VERSION = 14;
+
     private static final String COLUMN_LATITUD = "latitud";
     private static final String COLUMN_LONGITUD = "longitud";
     private static final String TABLE_USERS = "users";
@@ -48,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DIRECCION = "direccion";
     private static final String COLUMN_GENERO = "genero";
     private static final String COLUMN_FECHA_NAC = "fecha_nacimiento";
+
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
             + COLUMN_NOMBRE_USUARIO + " TEXT,"
@@ -365,27 +366,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     private void insertarVentasIniciales(SQLiteDatabase db) {
         ContentValues values = new ContentValues();
-        // Venta 1
+
+        values.put(COLUMN_NUMERO_FACTURA, "INV-1001");
         values.put(COLUMN_TIPO, "Corriente");
         values.put(COLUMN_LITROS, 20.5);
         values.put(COLUMN_PRECIO, 12000);
-        values.put(COLUMN_FECHA, "2025-03-25");
+        values.put(COLUMN_FECHA, "2025-03-25 08:30");
+        values.put(COLUMN_ESTACION_VENTA, "Terpel Norte");
         db.insert(TABLE_VENTAS, null, values);
 
         values.clear();
-        // Venta 2
+        values.put(COLUMN_NUMERO_FACTURA, "INV-1002");
         values.put(COLUMN_TIPO, "Extra");
         values.put(COLUMN_LITROS, 15.0);
         values.put(COLUMN_PRECIO, 14000);
-        values.put(COLUMN_FECHA, "2025-03-24");
+        values.put(COLUMN_FECHA, "2025-03-24 14:15");
+        values.put(COLUMN_ESTACION_VENTA, "Primax Centro");
         db.insert(TABLE_VENTAS, null, values);
 
         values.clear();
-        // Venta 3
+        values.put(COLUMN_NUMERO_FACTURA, "INV-1003");
         values.put(COLUMN_TIPO, "Diesel");
         values.put(COLUMN_LITROS, 30.2);
         values.put(COLUMN_PRECIO, 11000);
-        values.put(COLUMN_FECHA, "2025-03-23");
+        values.put(COLUMN_FECHA, "2025-03-23 09:00");
+        values.put(COLUMN_ESTACION_VENTA, "Texaco Sur");
         db.insert(TABLE_VENTAS, null, values);
     }
     @Override
@@ -664,20 +669,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return resultado != -1;
     }
 
-    public boolean registrarVenta(String tipo, double litros, double precio, String fecha){
-
+    public boolean registrarVenta(String numeroFactura, String tipo,
+                                  double litros, double precio, String fecha, String estacion) {
         SQLiteDatabase db = this.getWritableDatabase();
-
         ContentValues values = new ContentValues();
+        values.put(COLUMN_NUMERO_FACTURA, numeroFactura);
         values.put(COLUMN_TIPO, tipo);
         values.put(COLUMN_LITROS, litros);
         values.put(COLUMN_PRECIO, precio);
         values.put(COLUMN_FECHA, fecha);
+        values.put(COLUMN_ESTACION_VENTA, estacion);
 
         long resultado = db.insert(TABLE_VENTAS, null, values);
-
         db.close();
-
         return resultado != -1;
     }
 
@@ -867,14 +871,43 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     + COLUMN_CANTIDAD + " INTEGER"
                     + ")";
 
+
+    private static final String COLUMN_NUMERO_FACTURA = "numero_factura";
+
+    private static final String COLUMN_ESTACION_VENTA = "estacion_nombre";
     private static final String CREAR_TABLA_VENTAS =
             "CREATE TABLE " + TABLE_VENTAS + "("
                     + "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+                    + COLUMN_NUMERO_FACTURA + " TEXT,"
                     + COLUMN_TIPO + " TEXT,"
                     + COLUMN_LITROS + " REAL,"
                     + COLUMN_PRECIO + " REAL,"
-                    + COLUMN_FECHA + " TEXT"
+                    + COLUMN_FECHA + " TEXT,"
+                    + COLUMN_ESTACION_VENTA + " TEXT"
                     + ")";
+
+    public List<String[]> obtenerVentasConFactura() {
+        List<String[]> lista = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery("SELECT * FROM " + TABLE_VENTAS + " ORDER BY id DESC", null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                String numeroFactura = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NUMERO_FACTURA));
+                String tipo  = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_TIPO));
+                double litros = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_LITROS));
+                double precio = cursor.getDouble(cursor.getColumnIndexOrThrow(COLUMN_PRECIO));
+                String fecha  = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_FECHA));
+                String estacionNombre = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ESTACION_VENTA));
+                lista.add(new String[]{numeroFactura, tipo, String.valueOf(litros),
+                        String.valueOf(precio), fecha, estacionNombre});
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return lista;
+    }
 }
 
 

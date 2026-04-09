@@ -83,7 +83,7 @@ public class ReglasCombustible {
 
     /**
      * Obtiene el umbral crítico para un tipo de combustible (compatible API 21)
-     */
+
     public static int getUmbralCritico(String tipoCombustible) {
         Integer valor = UMBRALES_CRITICOS.get(tipoCombustible);
         if (valor != null) {
@@ -91,4 +91,5 @@ public class ReglasCombustible {
         }
         return 0;
     }
+     */
 }

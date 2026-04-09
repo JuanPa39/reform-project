@@ -15,7 +15,7 @@ import co.edu.unipiloto.stationadviser.Rules.ReglasCombustible;
 public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "UserManager.db";
-    private static final int DATABASE_VERSION = 14;
+    private static final int DATABASE_VERSION = 16;
 
     private static final String COLUMN_LATITUD = "latitud";
     private static final String COLUMN_LONGITUD = "longitud";
@@ -48,6 +48,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DIRECCION = "direccion";
     private static final String COLUMN_GENERO = "genero";
     private static final String COLUMN_FECHA_NAC = "fecha_nacimiento";
+    private static final String COLUMN_ESTACION_ID_USUARIO = "estacion_id";
 
     private static final String CREATE_TABLE_USERS = "CREATE TABLE " + TABLE_USERS + "("
             + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -58,7 +59,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + COLUMN_DIRECCION + " TEXT,"
             + COLUMN_GENERO + " TEXT,"
             + COLUMN_FECHA_NAC + " INTEGER,"
-            + COLUMN_ROL + " TEXT" + ")";
+            + COLUMN_ROL + " TEXT,"
+            + COLUMN_ESTACION_ID_USUARIO + " INTEGER DEFAULT 0" + ")";
 
     private static final String TABLE_NORMATIVAS = "normativas";
     private static final String COLUMN_TITULO = "titulo";
@@ -245,6 +247,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COLUMN_GENERO, "Femenino");
         values.put(COLUMN_FECHA_NAC, System.currentTimeMillis() - (30L * 365 * 24 * 60 * 60 * 1000));
         values.put(COLUMN_ROL, "Empleado de estación");
+        values.put(COLUMN_ESTACION_ID_USUARIO, 1);
         db.insert(TABLE_USERS, null, values);
 
         values.clear();
@@ -409,52 +412,66 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Usuario validarUsuario(String correo, String contrasena) {
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_USERS + " WHERE "
-                + COLUMN_CORREO + " = ? AND " + COLUMN_CONTRASENA + " = ?";
-
-        Cursor cursor = db.rawQuery(query, new String[]{correo, contrasena});
-
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_USERS + " WHERE "
+                        + COLUMN_CORREO + " = ? AND " + COLUMN_CONTRASENA + " = ?",
+                new String[]{correo, contrasena}
+        );
         Usuario usuario = null;
         if (cursor.moveToFirst()) {
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-            String correoDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO));
-            String contrasenaDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTRASENA));
-            String rolDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROL));
-
-            usuario = new Usuario(id, correoDb, contrasenaDb, rolDb);
+            usuario = cursorToUsuario(cursor);
         }
         cursor.close();
         db.close();
-
         return usuario;
     }
+
 
     public Usuario obtenerUsuarioPorCorreo(String correo) {
-
         SQLiteDatabase db = this.getReadableDatabase();
-
-        String query = "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_CORREO + " = ?";
-
-        Cursor cursor = db.rawQuery(query, new String[]{correo});
-
+        Cursor cursor = db.rawQuery(
+                "SELECT * FROM " + TABLE_USERS + " WHERE " + COLUMN_CORREO + " = ?",
+                new String[]{correo}
+        );
         Usuario usuario = null;
-
         if (cursor.moveToFirst()) {
-
-            int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-            String correoDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO));
-            String contrasenaDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTRASENA));
-            String rolDb = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROL));
-
-            usuario = new Usuario(id, correoDb, contrasenaDb, rolDb);
+            usuario = cursorToUsuario(cursor);
         }
-
         cursor.close();
         db.close();
-
         return usuario;
     }
+
+    private Usuario cursorToUsuario(Cursor cursor) {
+        return new Usuario(
+                cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_NOMBRE_USUARIO)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_USERNAME)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTRASENA)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_DIRECCION)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_GENERO)),
+                cursor.getLong(cursor.getColumnIndexOrThrow(COLUMN_FECHA_NAC)),
+                cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROL))
+        );
+    }
+
+    // Método para actualizar info personal (sin correo ni contraseña)
+    public boolean actualizarInfoPersonal(int id, String nombre, String username,
+                                          String direccion, String genero) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_NOMBRE_USUARIO, nombre);
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_DIRECCION, direccion);
+        values.put(COLUMN_GENERO, genero);
+
+        int filas = db.update(TABLE_USERS, values,
+                COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
+        db.close();
+        return filas > 0;
+    }
+
     // Método para agregar estación
     public boolean addEstacion(String nombre, String nit, String ubicacion, String latitud, String longitud) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -477,13 +494,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if (cursor.moveToFirst()) {
             do {
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(COLUMN_ID));
-                String correo = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CORREO));
-                String contrasena = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_CONTRASENA));
-                String rol = cursor.getString(cursor.getColumnIndexOrThrow(COLUMN_ROL));
-
-                Usuario usuario = new Usuario(id, correo, contrasena, rol);
-                listaUsuarios.add(usuario);
+                listaUsuarios.add(cursorToUsuario(cursor));
             } while (cursor.moveToNext());
         }
         cursor.close();
@@ -907,6 +918,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         cursor.close();
         db.close();
         return lista;
+    }
+
+    public int obtenerEstacionIdPorCorreo(String correo) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                "SELECT " + COLUMN_ESTACION_ID_USUARIO + " FROM " + TABLE_USERS
+                        + " WHERE " + COLUMN_CORREO + " = ?",
+                new String[]{correo}
+        );
+        int estacionId = 0;
+        if (cursor.moveToFirst()) {
+            estacionId = cursor.getInt(0);
+        }
+        cursor.close();
+        db.close();
+        return estacionId;
     }
 }
 

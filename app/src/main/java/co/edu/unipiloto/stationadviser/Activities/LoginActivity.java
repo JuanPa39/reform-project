@@ -80,9 +80,12 @@ public class LoginActivity extends AppCompatActivity {
 
         Toast.makeText(this, "Bienvenido " + usuario.getRol(), Toast.LENGTH_SHORT).show();
 
+        int estacionId = dbHelper.obtenerEstacionIdPorCorreo(usuario.getCorreo());
+
         Intent intent = new Intent(this, RoleBaseActivity.class);
         intent.putExtra("email", usuario.getCorreo());
         intent.putExtra("role", usuario.getRol());
+        intent.putExtra("estacionId", estacionId);
         startActivity(intent);
         finish();
     }

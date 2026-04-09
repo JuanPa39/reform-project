@@ -18,35 +18,38 @@ import co.edu.unipiloto.stationadviser.Rules.ReglasCombustible;
 
 public class RegistrarVentaActivity extends AppCompatActivity {
 
-    private Spinner spinnerEstacion, spinnerTipo;
+    private TextView tvEstacionAsignada;
+    private Spinner spinnerTipo;
     private EditText editLitros, editPrecio;
     private Button buttonGuardar;
     private DatabaseHelper db;
-    private List<Estacion> listaEstaciones;
+    private String nombreEstacion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar_venta);
 
-        spinnerEstacion = findViewById(R.id.spinnerEstacion);
-        spinnerTipo     = findViewById(R.id.spinnerTipo);
-        editLitros      = findViewById(R.id.editLitros);
-        editPrecio      = findViewById(R.id.editPrecio);
-        buttonGuardar   = findViewById(R.id.buttonGuardar);
+        tvEstacionAsignada = findViewById(R.id.tvEstacionAsignada);
+        spinnerTipo        = findViewById(R.id.spinnerTipo);
+        editLitros         = findViewById(R.id.editLitros);
+        editPrecio         = findViewById(R.id.editPrecio);
+        buttonGuardar      = findViewById(R.id.buttonGuardar);
 
         db = new DatabaseHelper(this);
 
-        // Cargar estaciones desde la BD
-        listaEstaciones = db.obtenerTodasLasEstaciones();
-        String[] nombresEstaciones = new String[listaEstaciones.size()];
-        for (int i = 0; i < listaEstaciones.size(); i++) {
-            nombresEstaciones[i] = listaEstaciones.get(i).getNombre();
+        // Obtener estación asignada al empleado
+        int estacionId = getIntent().getIntExtra("estacionId", 0);
+        if (estacionId > 0) {
+            Estacion estacion = db.getEstacionById(estacionId);
+            if (estacion != null) {
+                nombreEstacion = estacion.getNombre();
+                tvEstacionAsignada.setText("Estación: " + nombreEstacion);
+            }
+        } else {
+            tvEstacionAsignada.setText("Estación: No asignada");
+            nombreEstacion = "Sin estación";
         }
-        ArrayAdapter<String> adapterEstacion = new ArrayAdapter<>(
-                this, android.R.layout.simple_spinner_dropdown_item, nombresEstaciones
-        );
-        spinnerEstacion.setAdapter(adapterEstacion);
 
         // Tipos de combustible
         String[] tipos = {"Corriente", "Diesel", "Extra"};
@@ -68,21 +71,16 @@ public class RegistrarVentaActivity extends AppCompatActivity {
             double litros = Double.parseDouble(litrosStr);
             double precio = Double.parseDouble(precioStr);
 
-            // Obtener estación seleccionada
-            int posEstacion       = spinnerEstacion.getSelectedItemPosition();
-            Estacion estacion     = listaEstaciones.get(posEstacion);
-            String nombreEstacion = estacion.getNombre();
-
-            verificarInventarioAntesDeVender(tipo, litros, precio, nombreEstacion);
+            verificarInventarioAntesDeVender(tipo, litros, precio);
         });
     }
 
-    private void verificarInventarioAntesDeVender(String tipo, double litros, double precio, String nombreEstacion) {
+    private void verificarInventarioAntesDeVender(String tipo, double litros, double precio) {
         int cantidadActual = db.verificarNivelCombustible(tipo);
 
         if (cantidadActual < litros) {
-            Toast.makeText(this, "No hay suficiente inventario. Disponible: " + cantidadActual + " litros", Toast.LENGTH_LONG).show();
-            mostrarAlertaBajoNivel(tipo, cantidadActual);
+            Toast.makeText(this, "No hay suficiente inventario. Disponible: "
+                    + cantidadActual + " litros", Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -91,32 +89,37 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         if (ReglasCombustible.isNivelBajo(tipo, cantidadRestante)) {
             new AlertDialog.Builder(this)
                     .setTitle("⚠️ Alerta de inventario bajo")
-                    .setMessage("Después de esta venta, " + tipo + " quedará en " + cantidadRestante +
-                            " litros (mínimo recomendado: " + ReglasCombustible.getUmbralMinimo(tipo) + " L).\n\n" +
-                            "¿Desea continuar con la venta?")
-                    .setPositiveButton("Continuar", (dialog, which) -> realizarVenta(tipo, litros, precio, nombreEstacion))
+                    .setMessage("Después de esta venta, " + tipo + " quedará en "
+                            + cantidadRestante + " litros (mínimo recomendado: "
+                            + ReglasCombustible.getUmbralMinimo(tipo) + " L).\n\n"
+                            + "¿Desea continuar con la venta?")
+                    .setPositiveButton("Continuar", (dialog, which) ->
+                            realizarVenta(tipo, litros, precio))
                     .setNegativeButton("Cancelar", null)
                     .show();
         } else {
-            realizarVenta(tipo, litros, precio, nombreEstacion);
+            realizarVenta(tipo, litros, precio);
         }
     }
 
-    private void realizarVenta(String tipo, double litros, double precio, String nombreEstacion) {
+    private void realizarVenta(String tipo, double litros, double precio) {
         String numeroFactura = "INV-" + System.currentTimeMillis();
         String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
                 .format(new Date());
 
-        boolean resultado = db.registrarVenta(numeroFactura, tipo, litros, precio, fecha, nombreEstacion);
+        boolean resultado = db.registrarVenta(numeroFactura, tipo, litros, precio,
+                fecha, nombreEstacion);
 
         if (resultado) {
             Toast.makeText(this, "Venta registrada", Toast.LENGTH_SHORT).show();
 
-            // Verificar niveles después de la venta
-            verificarNivelesPostVenta();
+            List<String> alertas = db.verificarTodosLosNiveles();
+            for (String alerta : alertas) {
+                Toast.makeText(this, alerta, Toast.LENGTH_LONG).show();
+            }
 
-            // Ir a factura electrónica
-            Intent facturaIntent = new Intent(RegistrarVentaActivity.this, FacturaElectronicaActivity.class);
+            Intent facturaIntent = new Intent(RegistrarVentaActivity.this,
+                    FacturaElectronicaActivity.class);
             facturaIntent.putExtra("numeroFactura", numeroFactura);
             facturaIntent.putExtra("fecha", fecha);
             facturaIntent.putExtra("tipo", tipo);
@@ -130,17 +133,5 @@ public class RegistrarVentaActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "Error al registrar la venta", Toast.LENGTH_SHORT).show();
         }
-    }
-
-    private void verificarNivelesPostVenta() {
-        List<String> alertas = db.verificarTodosLosNiveles();
-        for (String alerta : alertas) {
-            Toast.makeText(this, alerta, Toast.LENGTH_LONG).show();
-        }
-    }
-
-    private void mostrarAlertaBajoNivel(String tipo, int cantidadActual) {
-        String mensaje = ReglasCombustible.getMensajeAlerta(tipo, cantidadActual);
-        Toast.makeText(this, mensaje, Toast.LENGTH_LONG).show();
     }
 }

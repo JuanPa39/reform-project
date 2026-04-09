@@ -19,6 +19,8 @@ public class RoleBaseActivity extends AppCompatActivity {
     private String userEmail;
     private String userRole;
 
+    private int userEstacionId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +31,7 @@ public class RoleBaseActivity extends AppCompatActivity {
         if (intent != null) {
             userEmail = intent.getStringExtra("email");
             userRole = intent.getStringExtra("role");
+            userEstacionId = intent.getIntExtra("estacionId", 0);
         }
 
         Log.d(TAG, "Email recibido: " + userEmail);
@@ -138,6 +141,7 @@ public class RoleBaseActivity extends AppCompatActivity {
                     button7.setText("Registrar venta de combustible");
                     button8.setText("Consultar historial de ventas");
                     button9.setText("Generar reporte mensual");
+                    button10.setText("Ver información personal");
 
                     button1.setOnClickListener(v -> {
                         Intent intent = new Intent(RoleBaseActivity.this, RegistrarEstacionActivity.class);
@@ -167,7 +171,9 @@ public class RoleBaseActivity extends AppCompatActivity {
                     });
 
                     button7.setOnClickListener(v -> {
-                        startActivity(new Intent(this, RegistrarVentaActivity.class));
+                        Intent i = new Intent(this, RegistrarVentaActivity.class);
+                        i.putExtra("estacionId", userEstacionId);
+                        startActivity(i);
                     });
 
                     button8.setOnClickListener(v -> {
@@ -176,6 +182,12 @@ public class RoleBaseActivity extends AppCompatActivity {
 
                     button9.setOnClickListener(v -> {
                         startActivity(new Intent(this, ReporteMensualActivity.class));
+                    });
+
+                    button10.setOnClickListener(v -> {
+                        Intent i = new Intent(this, InformacionPersonalActivity.class);
+                        i.putExtra("email", userEmail);
+                        startActivity(i);
                     });
 
                     break;
